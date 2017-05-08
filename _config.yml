@@ -1,25 +1,29 @@
+# Dependencies
+markdown:         redcarpet
+#highlighter:      pygments
+
 # Permalinks
-#
-# Use of `relative_permalinks` ensures post links from the index work properly.
-permalink:           pretty
+permalink:        pretty
 #relative_permalinks: true
 
 # Setup
-title:               Luna's blog
-tagline:             '總是要留下走過得痕跡'
-description:         '希望可以留下一些 自己學習的痕跡 在迷失時 可以找尋最初的目標 <a href="https://github.com/LunaHuang" target="_blank">Luna</a> .'
-url:                 https://lunahuang.github.io
-baseurl:			 https://lunahuang.github.io
-paginate:            5
+title:            Hyde
+tagline:          'A Jekyll theme'
+description:      'A brazen two-column <a href="http://jekyllrb.com" target="_blank">Jekyll</a> theme that pairs a prominent sidebar with uncomplicated content. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
+url:              http://hyde.getpoole.com
+baseurl:          /
 
-# About/contact
 author:
-  name:              Luna Huang
-  url:               ''
-  email:             shiulinghuang@gmail.com
+  name:           'Mark Otto'
+  url:            https://twitter.com/mdo
+
+paginate:         5
 
 # Custom vars
-version:             1.0.0
+version:          2.1.0
+
+github:
+  repo:           https://github.com/poole/hyde
 
 # Gems
 gems:

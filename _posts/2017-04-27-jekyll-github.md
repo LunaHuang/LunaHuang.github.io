@@ -1,10 +1,12 @@
 ---
+layout: post
 title: 利用Jekyll與Github Page建立自己的 Blog
+subtitle   : 介紹如何透過Jekell建立自已的網站
 categories: Github
-tags:
-- jekyll
-- hexo
+tags: jekyll hyde
 ---
+
+
 因爲看到同事利用Blog當作自己的筆記 覺得蠻好用的 所以想要自己架一個
 觀察他的blog發現竟然是github.io 讓我好奇如何用 Github 可以當作一個免費的平臺架站 
 主要是找到幾個人分享的資料 這邊來做個記錄
