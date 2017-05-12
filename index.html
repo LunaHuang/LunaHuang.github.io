@@ -68,10 +68,10 @@
       <div class="outer">
         <section id="main">
   
-    <article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-ARM-neon" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/05/08/hello-world/" class="article-date">
-  <time datetime="2017-05-08T14:37:55.298Z" itemprop="datePublished">2017-05-08</time>
+    <a href="/2017/05/12/ARM-neon/" class="article-date">
+  <time datetime="2017-05-12T06:15:38.000Z" itemprop="datePublished">2017-05-12</time>
 </a>
     
   </div>
@@ -82,7 +82,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/08/hello-world/">Hello World</a>
+      <a class="article-title" href="/2017/05/12/ARM-neon/">ARM Neon</a>
     </h1>
   
 
@@ -90,22 +90,138 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo new <span class="string">"My New Post"</span></div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo server</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo generate</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ hexo deploy</div></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+        <p>參考相關資料</p>
+<p><a href="http://hcliao.twbbs.org/android/neon" target="_blank" rel="external">android_neon</a> <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1360928366062.html" target="_blank" rel="external">來源1</a><br><a href="http://www.jianshu.com/p/70601b36540f" target="_blank" rel="external">來源2</a> <a href="https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-1-load-and-stores" target="_blank" rel="external">來源3</a></p>
+<p>在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
+<p>Neon 是 ARM 的SIMD 指令 (Single Instruction Multiple Data),<br>在ARM cortex 系列才有支援 主要用在media 相關的處理<br>有支援C &amp; C++ language （<code>#include &lt;arm_neon.h&gt;</code>）<br>所以可以看到有人用C 或 S 寫<br>主要register type 是D(64bits) &amp; Q(128bits), 共有D0～D32 對應到Q0~Q16<br>所以每兩個D register對應到一個Qregister</p>
+<p>這邊有幾個項目需要注意一下</p>
+<ol>
+<li>NEON instructions execute in their own 10-stage pipeline</li>
+<li>ARM can dispatch 2 NEON instructions per cycle</li>
+<li>ARM → NEON register transfer is fast</li>
+<li>NEON → ARM register transfer is slow</li>
+<li>NEON instructions will physically execute much later than they appear to in the code</li>
+<li>32 64-bit (“doubleword”) registers: d0-d31</li>
+<li>16 128-bit (“quadword”) registers: q0-q15</li>
+<li>qN is aliased to d(2N), d(2N+1)<ul>
+<li>e.g., q0 == d0, d1</li>
+</ul>
+</li>
+<li>q4-q7 are callee-saved<ul>
+<li>VPUSH {q4-q7}</li>
+<li>VPOP {q4-q7}</li>
+</ul>
+</li>
+</ol>
+<p><img src="/images/neon_1.png" alt="neon_reg"></p>
+<p>在arm_neon.h 內可以看到相關的C用到的定義<br>在Neon下很重視 對齊 所以格式需要符合要求 才能做存取的動作<br>所以當不對齊時 需要做調整</p>
+<pre><code>uint8x8_t vld1_u8 (const uint8_t *)
+第二个字段&apos;ld&apos;表示加载指令
+第三个字段&apos;1&apos;(注意是1，不是l)表示顺次加载。如果需要处理图像的
+</code></pre><p>RGB分量，可能会用到vld3。关于vld/vst指令更详细的说明，请自己参阅arm官方文档。</p>
+<p>從memory load to neon 跟從neon load 到memory  的方式如下:<br><img src="/images/neon_2.png" alt=""><br><img src="/images/neon_3.png" alt=""></p>
+<p>＃＃YUV 格式 紀錄</p>
+<p>參考資料<br><a href="https://wiki.videolan.org/YUV/#I422" target="_blank" rel="external">來源1</a> <a href="https://read01.com/jxN8QD.html" target="_blank" rel="external">來源2</a> <a href="http://blog.csdn.net/leixiaohua1020/article/details/12234821" target="_blank" rel="external">來源3</a></p>
+<p>在影像儲存格式中YUV是常見的格式<br>目前確定USB camera 會用YUYV 跟MJPG<br>IP camera 有用到I420P<br>YUV，分為三個分量，「Y」表示明亮度（Luminance或Luma），也就是灰度<br>值；<br>而「U」和「V」 表示的則是色度（Chrominance或Chroma），作用是描述&gt;影像色彩及飽和度，用於指定像素的顏色。</p>
+<p>與我們熟知的RGB類似，YUV也是一種顏色編碼方法，主要用於電視系統以&gt;及模擬視頻領域，它將亮度信息（Y）與色彩信息（UV）分離，沒有UV信息<br>一樣可以顯示完整的圖像，只不過是黑白的，這樣的設計很好地解決了彩&gt;色電視機與黑白電視的兼容問題。並且，YUV不像RGB那樣要求三個獨立的&gt;視頻信號同時傳輸，所以用YUV方式傳送占用極少的頻寬。<br><a href="https://read01.com/jxN8QD.html" target="_blank" rel="external">原文網址</a></p>
+<p>對人類而言 亮度的感受 會比色度來的明顯<br>這是因為人眼視網膜是由兩種感光細胞組成的<br>分別是三種錐狀細胞(cone cell,以下稱CC)和一種桿狀細胞(rod cell,以&gt;下稱RC)<br>三種CC能分別感應RGB三種波長的光 負責色彩感受(這就是光學三原色的由<br>來)<br>RC則是負責亮度的感應 且RC對微光的敏感度比CC還強得多<br>這就是為什麼當你晚上在房間摸黑時 所有東西看起來都是接近黑白的 沒&gt;什麼顏色</p>
+<p>YUV 的格式有分很多種排列方式<br>IP camera 用到的I420p是 YUV420p 它跟  YUV420sp在UV這邊排列方式是&gt;不一樣的<br><img src="/images/yuv_420p.png" alt="yuv420p"><br>NV12: YYYYYYYY UVUV =&gt;YUV420SP<br><img src="/images/yuv_420sp.png" alt="NV21"></p>
+<p>在I420轉RGB這邊 用NEON可以大大的減少CPU loading 如下表</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方式</th>
+<th style="text-align:center">CPU loading</th>
+<th style="text-align:center">time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">QT 轉換</td>
+<td style="text-align:center">70％</td>
+<td style="text-align:center">N</td>
+</tr>
+<tr>
+<td style="text-align:center">C code(RGB24)</td>
+<td style="text-align:center">40~43％</td>
+<td style="text-align:center">6-14ms</td>
+</tr>
+<tr>
+<td style="text-align:center">NEON(RGB32)</td>
+<td style="text-align:center">30~32％</td>
+<td style="text-align:center">2-4ms</td>
+</tr>
+</tbody>
+</table>
+<p>USB camera YUYV(YUY2)  用的排列方式是 YUYV的方式 下圖的Cb = U Cr=V<br><img src="/images/yuy2.png" alt="yuy2"></p>
+<p>因為排列方式不一樣 所以用的YUV to RGB演算法耶不一樣<br>目前在網路上可以直接找到的neon yuvTOrgb 比較多得是I4202RGB NV212RGB 等<br>YUY2RGB 的部份找不到<br>有試過先轉成I420 在轉成RGB發現顏色上面會失真<br>轉的方式是保留兩個 Y 在UV這邊留下一個偶數行的部份</p>
+<pre><code>int YUY2ToI420(unsigned char *in, unsigned char *out, int _width, int _height){
+    long pixels = _width * _height;
+    long macropixels = pixels / 2; // macropixel count
+    // new size will be w * h * 3/2 -&gt; 12 bits per pixel 4:2:0
+    const size_t stride = align16(_width);
+    //long mpx_per_row = info.biWidth / 2;
+    long mpx_per_row = stride;
+    // for each macropixel
+    for (int i = 0, ci = 0; i &lt; macropixels; i++){ // ci is chroma index
+        // get macropixel address, order is Y0 U0 Y1 V0
+        unsigned char *mpAddress = in + i * 4;
+
+        // copy luma data
+        out[i * 2] = mpAddress[0];
+        out[i * 2 + 1] = mpAddress[2];
+        // copy chroma data - we skip odd rows because of 4:2:0 sampling
+        long row_number = i / mpx_per_row;
+        if (row_number % 2 != 0) {
+            out[pixels + ci] = mpAddress[1]; // shift by Y vector
+            out[pixels + pixels / 4 + ci] = mpAddress[3]; // shift by Y and U vector
+            ci++;
+        }
+    }
+    return pixels * 12 / 8; // I420
+}
+</code></pre><p>測試過透過ffmpag libswscale 轉換 效果也不好<br><a href="http://blog.csdn.net/wenwei19861106/article/details/8702586" target="_blank" rel="external">來源1</a> <a href="http://guguclock.blogspot.tw/2009/12/ffmpeg-swscale.html" target="_blank" rel="external">來源2</a> <a href="http://www.cnblogs.com/pokerface/p/6203577.html" target="_blank" rel="external">來源3</a></p>
+<pre><code>#if LIBAVCODEC_VERSION_INT &lt; AV_VERSION_INT(55,28,1)
+#define av_frame_alloc  avcodec_alloc_frame
+#endif
+int swscale(unsigned char *p, unsigned char *rgb, int src_w, int src_h)
+{
+ //   const int src_w=640,src_h=480;
+ //   unsigned char *rgb, *p;
+    AVFrame *pFrame = av_frame_alloc();
+    AVFrame *pFrameRGB = av_frame_alloc();
+
+    avpicture_fill((AVPicture*) pFrameRGB, rgb, PIX_FMT_RGB24, src_w, src_h);
+    avpicture_fill((AVPicture*) pFrame, p, PIX_FMT_YUYV422, src_w, src_h);
+
+    struct SwsContext *img_convert_ctx = sws_getContext(src_w, src_h, PIX_FMT_YUYV422, src_w, src_h, PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+    sws_scale(img_convert_ctx, (uint8_t const* const*)pFrame-&gt;data, pFrame-&gt;linesize,0,src_h,pFrameRGB-&gt;data, pFrameRGB-&gt;linesize);
+    sws_freeContext(img_convert_ctx);
+    av_freep(&amp;pFrameRGB);
+    av_freep(&amp;pFrame);
+    return 0;
+}
+</code></pre><p>目前有做一些實驗確認 USB camera CPU loading 的問題點</p>
+<ol>
+<li>移除呼叫YUYVtoRGB的code 這樣測試出來 CPU loading 一樣是60％</li>
+<li>在 CameraFrameGrabber::present(const QVideoFrame &amp;frame) 加上count 超過5時會直接return trun 測試出來CPU loading 一樣60％</li>
+<li>將格式直接呼叫I420toRGB neon CPU loading一樣60%</li>
+<li>建立一個red QImage 畫上去 不呼叫轉換的code跟memory copy<pre><code>img = QImage(640, 480, QImage::Format_RGB32);
+img.fill(QColor(&quot;red&quot;));
+</code></pre>CPU loading一樣57% 左右</li>
+<li>拿掉 emit frameAvailable(img); CPU loading 掉到35％</li>
+<li>跑qml or gstreamer,  CPU loading 是2-4％ 猜測問題點在來源(input) 目前沒有解</li>
+<li>透過 mjpg_streamer 測試 USB camera 發現CPU loading 大約46％<br>所以可以大概判定是source 來源問題</li>
+</ol>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/05/08/hello-world/" data-id="cj2kit9rf00043a06nmjib51q" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/05/12/ARM-neon/" data-id="cj2m07xwo0001y00602fske9b" class="article-share-link">Share</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neon/">neon</a></li></ul>
+
     </footer>
   </div>
   
@@ -113,12 +229,16 @@
 
 
   
-    <article id="post-2017-05-08-introducing-hyde" class="article article-type-post" itemscope itemprop="blogPost">
+    <article id="post-hexo-themes" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2017/05/08/2017-05-08-introducing-hyde/" class="article-date">
-  <time datetime="2017-05-08T03:01:00.000Z" itemprop="datePublished">2017-05-08</time>
+    <a href="/2017/05/12/hexo-themes/" class="article-date">
+  <time datetime="2017-05-12T05:38:53.000Z" itemprop="datePublished">2017-05-12</time>
 </a>
     
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Blog/">Blog</a>
+  </div>
+
   </div>
   <div class="article-inner">
     
@@ -127,7 +247,7 @@
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/08/2017-05-08-introducing-hyde/">Introducing Hyde</a>
+      <a class="article-title" href="/2017/05/12/hexo-themes/">hexo themes</a>
     </h1>
   
 
@@ -135,34 +255,93 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Hyde is a brazen two-column <a href="http://jekyllrb.com" target="_blank" rel="external">Jekyll</a> theme that pairs a prominent sidebar with uncomplicated content. It’s based on <a href="http://getpoole.com" target="_blank" rel="external">Poole</a>, the Jekyll butler.</p>
-<h3 id="Built-on-Poole"><a href="#Built-on-Poole" class="headerlink" title="Built on Poole"></a>Built on Poole</h3><p>Poole is the Jekyll Butler, serving as an upstanding and effective foundation for Jekyll themes by <a href="https://twitter.com/mdo" target="_blank" rel="external">@mdo</a>. Poole, and every theme built on it (like Hyde here) includes the following:</p>
-<ul>
-<li>Complete Jekyll setup included (layouts, config, <a href="/404">404</a>, <a href="/atom.xml">RSS feed</a>, posts, and <a href="/about">example page</a>)</li>
-<li>Mobile friendly design and development</li>
-<li>Easily scalable text and component sizing with <code>rem</code> units in the CSS</li>
-<li>Support for a wide gamut of HTML elements</li>
-<li>Related posts (time-based, because Jekyll) below each post</li>
-<li>Syntax highlighting, courtesy Pygments (the Python-based code snippet highlighter)</li>
-</ul>
-<h3 id="Hyde-features"><a href="#Hyde-features" class="headerlink" title="Hyde features"></a>Hyde features</h3><p>In addition to the features of Poole, Hyde adds the following:</p>
-<ul>
-<li>Sidebar includes support for textual modules and a dynamically generated navigation with active link support</li>
-<li>Two orientations for content and sidebar, default (left sidebar) and <a href="https://github.com/poole/lanyon#reverse-layout" target="_blank" rel="external">reverse</a> (right sidebar), available via <code>&lt;body&gt;</code> classes</li>
-<li><a href="https://github.com/poole/hyde#themes" target="_blank" rel="external">Eight optional color schemes</a>, available via <code>&lt;body&gt;</code> classes</li>
-</ul>
-<p><a href="https://github.com/poole/hyde#readme" target="_blank" rel="external">Head to the readme</a> to learn more.</p>
-<h3 id="Browser-support"><a href="#Browser-support" class="headerlink" title="Browser support"></a>Browser support</h3><p>Hyde is by preference a forward-thinking project. In addition to the latest versions of Chrome, Safari (mobile and desktop), and Firefox, it is only compatible with Internet Explorer 9 and above.</p>
-<h3 id="Download"><a href="#Download" class="headerlink" title="Download"></a>Download</h3><p>Hyde is developed on and hosted with GitHub. Head to the <a href="https://github.com/poole/hyde" target="_blank" rel="external">GitHub repository</a> for downloads, bug reports, and features requests.</p>
-<p>Thanks!</p>
+        <p>在<a href="https://hexo.io/themes/" target="_blank" rel="external">hexo themes</a>可以找到很多別人提供的框架<br>點選進去透過git clone 到 自己的themes 資料夾下面<br>修改_config.yml 下面theme 為clone 下來的資料夾名稱<br><strong>注意： 在theme: 後面要空一格 在填寫資料夾名稱</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">theme: hexo-theme-beantech</div></pre></td></tr></table></figure></p>
+<p>重新啟動server這樣就可以看到框架的改變</p>
+<h2 id="Themes-landscape-修改"><a href="#Themes-landscape-修改" class="headerlink" title="Themes landscape 修改"></a>Themes landscape 修改</h2><h3 id="修改Landscape-Header圖"><a href="#修改Landscape-Header圖" class="headerlink" title="修改Landscape Header圖"></a>修改Landscape Header圖</h3><p>在landscape 圖片是放在 landscape/source/css/images 下面<br>在landscape/source/css/_variables.styl 內有一行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">banner-url = &quot;images/banner.jpg&quot;</div></pre></td></tr></table></figure></p>
+<p>將圖片改名成你要的就可以了 建議圖片是長條延展這樣效果比較好</p>
+<h3 id="修改網站-title-顯示的位置"><a href="#修改網站-title-顯示的位置" class="headerlink" title="修改網站 title  顯示的位置"></a>修改網站 title  顯示的位置</h3><p>在landscape/source/css/_partial/header.styl內有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#header-title</div><div class="line">  text-align: center</div><div class="line">  height: logo-size</div><div class="line">  position: absolute</div><div class="line">  top: 50%</div><div class="line">  left: 0</div><div class="line">  margin-top: logo-size * -0.5</div></pre></td></tr></table></figure></p>
+<p>修改top value可以調整上下位置 修改left 正數為向右移 負數為向左移</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/05/08/2017-05-08-introducing-hyde/" data-id="cj2kit9r700013a06v5ra2blc" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/05/12/hexo-themes/" data-id="cj2m07xwx0005y006spjspcho" class="article-share-link">Share</a>
       
       
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hyde/">hyde</a></li></ul>
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-hexo-startup" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/12/hexo-startup/" class="article-date">
+  <time datetime="2017-05-12T01:45:51.000Z" itemprop="datePublished">2017-05-12</time>
+</a>
+    
+  <div class="article-category">
+    <a class="article-category-link" href="/categories/Blog/">Blog</a>
+  </div>
+
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/12/hexo-startup/">hexo startup</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>透過<a href="https://hexo.io/zh-tw/docs/index.html" target="_blank" rel="external">Hexo</a>可以快速的建立一個blog<br>比Jekyll 好用的地方在tag部份跟有許多人提供他們修改過後的框架<br>但是透過github這邊去顯示網站的部份 不能透過git 去做版本控管<br>push 上去一定要透過<code>hexo deploy</code><br>不過Hexo 的相關文件比較齊全 又有中文支援 優勢蠻大的</p>
+<h2 id="基本需求"><a href="#基本需求" class="headerlink" title="基本需求"></a>基本需求</h2><p>安裝Hexo 之前需要卻兩個軟體</p>
+<ul>
+<li>Node.js </li>
+<li>Git </li>
+</ul>
+<p>安裝Node.js的方式網路上面都有說 這邊最主要說明ubuntu 下更新Node.js的方式<br>在ubuntu 15.04下面 試過<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># Using Ubuntu</div><div class="line">curl -sL https://deb.nodesource.com/setup_7.x | sudo -E bash -</div><div class="line">sudo apt-get install -y nodejs</div></pre></td></tr></table></figure></p>
+<p>是失敗的 不會更新 最後是透過下面的方式更新成功<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">sudo npm cache clean -f</div><div class="line">sudo npm install -g n</div><div class="line">sudo n stable</div><div class="line"></div><div class="line">sudo ln -sf /usr/local/n/versions/node/&lt;VERSION&gt;/bin/node /usr/bin/node</div></pre></td></tr></table></figure></p>
+<p>要更再更新到最後的版本可以<code>sudo n latest</code><br>參考來源<a href="https://davidwalsh.name/upgrade-nodejs" target="_blank" rel="external">David Walsh blog</a></p>
+<h4 id="注意-node-js版本不對時-會導致後面安裝hexo-失敗-有下面error-message"><a href="#注意-node-js版本不對時-會導致後面安裝hexo-失敗-有下面error-message" class="headerlink" title="注意 node.js版本不對時 會導致後面安裝hexo 失敗  有下面error message"></a>注意 node.js版本不對時 會導致後面安裝hexo 失敗  有下面error message</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install errors with Error: ENOENT, chmod</div></pre></td></tr></table></figure>
+<h2 id="hexo-安裝-and-相關指令"><a href="#hexo-安裝-and-相關指令" class="headerlink" title="hexo 安裝 and 相關指令"></a>hexo 安裝 and 相關指令</h2><p>透過npm 安裝<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo npm install -g hexo-cli</div></pre></td></tr></table></figure></p>
+<p>安裝後的相關檔案在/usr/local/n/versions/node/<version>/lib/node_modules</version></p>
+<h4 id="建立"><a href="#建立" class="headerlink" title="建立"></a>建立</h4><p>透過下面指令可以建立一個基本的所需的檔案<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">hexo init &lt;folder&gt;</div><div class="line">cd &lt;folder&gt;</div><div class="line">npm install</div></pre></td></tr></table></figure></p>
+<p>在<folder>專案內大致上有這些<br><img src="/images/hexo_1.png" alt="file_list"></folder></p>
+<ul>
+<li><p>_config.yml 是網站配置設定<br><strong>注意 這邊的修改 在 “:” 之後都要空一格 格式上面要注意 才不會server啟動之後有問題</strong></p>
+</li>
+<li><p>source資料夾下面會產生基本的hexo layout 的資料夾名稱_posts _drafts<br>Hexo 有三種預設佈局：post、page 和 draft，它們分別對應不同的路徑<br><img src="/images/hexo_2.png" alt="path"></p>
+</li>
+</ul>
+<p>相關的放置文章的地方就在這幾個資料夾下面<br><strong>這邊要注意 放置網頁的圖片不能放在這幾個資料夾下面 需要另外建立一個地方放置</strong><br>例如source/images 要不然會找不到<br>另外加入圖片markdown 這邊寫法是<br> <code>![path](/images/hexo_2.png)</code><br>後面path路徑是base 在source folder 下面</p>
+<ul>
+<li>themes  這邊是放相關網站要用的框架 default 是landscape<br>你可以透過網路上下載想要的框架放在themes folder下面<br>修改_config.yml 下面的名稱 改成對應的資料夾<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># Extensions</div><div class="line">theme: landscape</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="指令"><a href="#指令" class="headerlink" title="指令"></a>指令</h4><p><code>hexo init [folder]</code> 建立一個新的網站<br><code>hexo new [layout] &lt;tiltle&gt;</code> 產生一篇新的文章 default layout 是用_config.yml的default_layout<br><code>hexo server</code> 啟動server 透過localhost:4000可以看到,可以縮寫成<code>hexo s</code><br><code>hexo generate</code> 產生靜態檔案 放到hithub 上面需要的, 部署網站前先產生靜態檔案,可以縮寫成<code>hexo g</code><br><code>hexo clean</code>  清除快取檔案 (db.json) 和已產生的靜態檔案 (public), 建議在generate 前先做一次clean<br><code>hexo deploy</code> 會將靜態檔案push到遠端的server<br>deploy設定在_config.yml內<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"># Deployment</div><div class="line">## Docs: https://hexo.io/docs/deployment.html</div><div class="line">deploy:</div><div class="line">  type:</div></pre></td></tr></table></figure></p>
+<h4 id="發佈到github上面"><a href="#發佈到github上面" class="headerlink" title="發佈到github上面"></a>發佈到github上面</h4><p>要push 到git 上面需要先安裝hexo-deployer-git<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install hexo-deployer-git --save</div></pre></td></tr></table></figure></p>
+<p>如果想要透過<git_account>.github.io連到自己的網站<br>需要在github上面建立<git_account>.github.io名稱的repository<br>再將repository 位置改成它</git_account></git_account></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">deploy:</div><div class="line">  type: github</div><div class="line">  repository: git@github.com:github帳號/github帳號.github.com.git</div><div class="line">  branch: master</div></pre></td></tr></table></figure>
+<p>這邊push是透過ssh認證 需要在github加上你的ssh key<br>deploy之後需要等待3-5分鐘github上面會更新</p>
+<p>其他詳細的資訊可以透過<a href="https://hexo.io/zh-tw/docs/index.html" target="_blank" rel="external">Hexo</a>找尋</p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lunahuang.github.io/2017/05/12/hexo-startup/" data-id="cj2m07xwu0004y0060oecwttd" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
 
     </footer>
   </div>
@@ -199,13 +378,27 @@
       
         <p>因爲看到同事利用Blog當作自己的筆記 覺得蠻好用的 所以想要自己架一個<br>觀察他的blog發現竟然是github.io 讓我好奇如何用 Github 可以當作一個免費的平臺架站<br>主要是找到幾個人分享的資料 這邊來做個記錄</p>
 <p><a href="http://seans.tw/2016/make-own-blog-with-jekyll-and-github-page/" target="_blank" rel="external">利用Jekyll與Github Page建立自己的Dev-Blog</a><br><a href="https://rhadow.github.io/2015/02/18/Jekyll-x-Github-x-Blog-Part1/" target="_blank" rel="external">Jekyll x Github x Blog</a></p>
-<p>其實目前可以常見跟github結合的有 wordpress, hexo, jekyll<br>會選擇jekyll 一方面是同事也在用另一方面github上面推薦的啊</p>
-<p>Jekyll是base on ruby 開發 需要的版本要ruby2.0以上</p>
+<p>其實目前可以常見跟github結合的有 wordpress, hexo, jekyll<br>會選擇jekyll 一方面是同事也在用另一方面github上面推薦的</p>
+<p>但是在遇到tags部份的處理之後 覺得hexo比較好用 後來就改用hexo<br>可是在版本控管 Jekyll還是有優勢 可以直接享受 Github 本來就有提供的版本控制功能</p>
+<h2 id="Jekyll基本安裝"><a href="#Jekyll基本安裝" class="headerlink" title="Jekyll基本安裝"></a>Jekyll基本安裝</h2><p>Jekyll是base on ruby 開發 需要的版本要ruby2.0以上</p>
+<p>在ubuntu下 當系統已經安裝不合版本的ruby時需要更新<br><code>ruby -v</code> check version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">luna@luna-ubuntu14:blog$ ruby -v</div><div class="line">ruby 2.0.0p384 (2014-01-12) [x86_64-linux-gnu]</div></pre></td></tr></table></figure></p>
+<p>可以直接透過<code>apt-get install ruby2.0 ruby2.0-dev</code> 安裝2.0版本<br>我們需要dev 因爲在安裝Jekyll時會自己做編譯的動作<br>在安裝之後需要將原本相關執行檔的link 重新連結 這樣才會用到對的版本透過下面command<br>    update-alternatives –install /usr/bin/ruby ruby /usr/bin/ruby-2.0 400 \<br>     –slave /usr/bin/rake rake /usr/bin/rake2.0 \<br>     –slave /usr/bin/ri ri /usr/bin/ri2.0 \<br>     –slave /usr/bin/rdoc rdoc /usr/bin/rdoc2.0 \<br>     –slave /usr/bin/gem gem /usr/bin/gem2.0 \<br>     –slave /usr/bin/irb irb /usr/bin/irb2.0</p>
+<p>可以再透過<code>ruby -v</code> or <code>gem -v</code>確認抓到的版本是不是最新的</p>
+<p><a href="https://jekyllrb.com/" target="_blank" rel="external">Jekyll 官方網站</a>目前release 版本到3.x 最基本的安裝方式如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gem install jekyll bundler</div></pre></td></tr></table></figure>
+<p>安裝之後再透過下面command可以產生最基本的檔案在my-Blog資料夾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jekyll new my-Blog</div></pre></td></tr></table></figure>
+<p>執行方式是進入my-Blog資料夾內 run <code>bundle exec jekyll serve</code><br>或是 <code>jekyll build</code> 先去建立_site之後 run <code>jekyll serve</code><br>透過browse 打 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到最基本的網站</p>
+<h2 id="透過Github-建立自已的網站"><a href="#透過Github-建立自已的網站" class="headerlink" title="透過Github 建立自已的網站"></a>透過Github 建立自已的網站</h2><p>Github有一個Pages的服務，讓你可以把自己的靜態網頁丟到Github上。<br>使用Jekyll只要把整包產出來的檔案直接Push到Github上就可以<br>但如果想要透過account.github.io 這個位置可以連到自己的網站<br>需要在 Githubg上面建立一個repo名稱是account.github.io (這邊的account是自己的帳號名稱)<br>並卻定branch是在master上面,接下來將剛剛的my-Blog push上去就好了</p>
+<pre><code>cd my-Blog
+git remote add origin https://github.com/account/account.github.io.git
+git push -u origin master
+</code></pre><p>然後你可透過 browse 登入 <a href="http://account.github.io.git" target="_blank" rel="external">http://account.github.io.git</a> </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/" data-id="cj2kit9r100003a06c9yk7s9z" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/" data-id="cj2m07xwh0000y006cgxxz0m3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jekyll/">jekyll</a></li></ul>
@@ -236,7 +429,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hyde/">hyde</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jekyll/">jekyll</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jekyll/">jekyll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neon/">neon</a></li></ul>
     </div>
   </div>
 
@@ -246,7 +439,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hyde/" style="font-size: 10px;">hyde</a> <a href="/tags/jekyll/" style="font-size: 10px;">jekyll</a>
+      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/jekyll/" style="font-size: 10px;">jekyll</a> <a href="/tags/neon/" style="font-size: 10px;">neon</a>
     </div>
   </div>
 
@@ -268,11 +461,15 @@
       <ul>
         
           <li>
-            <a href="/2017/05/08/hello-world/">Hello World</a>
+            <a href="/2017/05/12/ARM-neon/">ARM Neon</a>
           </li>
         
           <li>
-            <a href="/2017/05/08/2017-05-08-introducing-hyde/">Introducing Hyde</a>
+            <a href="/2017/05/12/hexo-themes/">hexo themes</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/12/hexo-startup/">hexo startup</a>
           </li>
         
           <li>

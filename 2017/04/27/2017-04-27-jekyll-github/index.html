@@ -12,7 +12,7 @@
 <meta property="og:url" content="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/index.html">
 <meta property="og:site_name" content="Luna&#39;s Note">
 <meta property="og:description" content="介紹如何透過Jekell建立自已的網站">
-<meta property="og:updated_time" content="2017-05-10T16:04:34.294Z">
+<meta property="og:updated_time" content="2017-05-11T16:04:29.220Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="利用Jekyll與Github Page建立自己的 Blog">
 <meta name="twitter:description" content="介紹如何透過Jekell建立自已的網站">
@@ -96,13 +96,27 @@
       
         <p>因爲看到同事利用Blog當作自己的筆記 覺得蠻好用的 所以想要自己架一個<br>觀察他的blog發現竟然是github.io 讓我好奇如何用 Github 可以當作一個免費的平臺架站<br>主要是找到幾個人分享的資料 這邊來做個記錄</p>
 <p><a href="http://seans.tw/2016/make-own-blog-with-jekyll-and-github-page/" target="_blank" rel="external">利用Jekyll與Github Page建立自己的Dev-Blog</a><br><a href="https://rhadow.github.io/2015/02/18/Jekyll-x-Github-x-Blog-Part1/" target="_blank" rel="external">Jekyll x Github x Blog</a></p>
-<p>其實目前可以常見跟github結合的有 wordpress, hexo, jekyll<br>會選擇jekyll 一方面是同事也在用另一方面github上面推薦的啊</p>
-<p>Jekyll是base on ruby 開發 需要的版本要ruby2.0以上</p>
+<p>其實目前可以常見跟github結合的有 wordpress, hexo, jekyll<br>會選擇jekyll 一方面是同事也在用另一方面github上面推薦的</p>
+<p>但是在遇到tags部份的處理之後 覺得hexo比較好用 後來就改用hexo<br>可是在版本控管 Jekyll還是有優勢 可以直接享受 Github 本來就有提供的版本控制功能</p>
+<h2 id="Jekyll基本安裝"><a href="#Jekyll基本安裝" class="headerlink" title="Jekyll基本安裝"></a>Jekyll基本安裝</h2><p>Jekyll是base on ruby 開發 需要的版本要ruby2.0以上</p>
+<p>在ubuntu下 當系統已經安裝不合版本的ruby時需要更新<br><code>ruby -v</code> check version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">luna@luna-ubuntu14:blog$ ruby -v</div><div class="line">ruby 2.0.0p384 (2014-01-12) [x86_64-linux-gnu]</div></pre></td></tr></table></figure></p>
+<p>可以直接透過<code>apt-get install ruby2.0 ruby2.0-dev</code> 安裝2.0版本<br>我們需要dev 因爲在安裝Jekyll時會自己做編譯的動作<br>在安裝之後需要將原本相關執行檔的link 重新連結 這樣才會用到對的版本透過下面command<br>    update-alternatives –install /usr/bin/ruby ruby /usr/bin/ruby-2.0 400 \<br>     –slave /usr/bin/rake rake /usr/bin/rake2.0 \<br>     –slave /usr/bin/ri ri /usr/bin/ri2.0 \<br>     –slave /usr/bin/rdoc rdoc /usr/bin/rdoc2.0 \<br>     –slave /usr/bin/gem gem /usr/bin/gem2.0 \<br>     –slave /usr/bin/irb irb /usr/bin/irb2.0</p>
+<p>可以再透過<code>ruby -v</code> or <code>gem -v</code>確認抓到的版本是不是最新的</p>
+<p><a href="https://jekyllrb.com/" target="_blank" rel="external">Jekyll 官方網站</a>目前release 版本到3.x 最基本的安裝方式如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gem install jekyll bundler</div></pre></td></tr></table></figure>
+<p>安裝之後再透過下面command可以產生最基本的檔案在my-Blog資料夾</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">jekyll new my-Blog</div></pre></td></tr></table></figure>
+<p>執行方式是進入my-Blog資料夾內 run <code>bundle exec jekyll serve</code><br>或是 <code>jekyll build</code> 先去建立_site之後 run <code>jekyll serve</code><br>透過browse 打 <a href="http://localhost:4000" target="_blank" rel="external">http://localhost:4000</a> 就可以看到最基本的網站</p>
+<h2 id="透過Github-建立自已的網站"><a href="#透過Github-建立自已的網站" class="headerlink" title="透過Github 建立自已的網站"></a>透過Github 建立自已的網站</h2><p>Github有一個Pages的服務，讓你可以把自己的靜態網頁丟到Github上。<br>使用Jekyll只要把整包產出來的檔案直接Push到Github上就可以<br>但如果想要透過account.github.io 這個位置可以連到自己的網站<br>需要在 Githubg上面建立一個repo名稱是account.github.io (這邊的account是自己的帳號名稱)<br>並卻定branch是在master上面,接下來將剛剛的my-Blog push上去就好了</p>
+<pre><code>cd my-Blog
+git remote add origin https://github.com/account/account.github.io.git
+git push -u origin master
+</code></pre><p>然後你可透過 browse 登入 <a href="http://account.github.io.git" target="_blank" rel="external">http://account.github.io.git</a> </p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/" data-id="cj2kit9r100003a06c9yk7s9z" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/" data-id="cj2m07xwh0000y006cgxxz0m3" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jekyll/">jekyll</a></li></ul>
@@ -113,11 +127,11 @@
     
 <nav id="article-nav">
   
-    <a href="/2017/05/08/2017-05-08-introducing-hyde/" id="article-nav-newer" class="article-nav-link-wrap">
+    <a href="/2017/05/12/hexo-startup/" id="article-nav-newer" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Newer</strong>
       <div class="article-nav-title">
         
-          Introducing Hyde
+          hexo startup
         
       </div>
     </a>
@@ -146,7 +160,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hyde/">hyde</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jekyll/">jekyll</a></li></ul>
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jekyll/">jekyll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neon/">neon</a></li></ul>
     </div>
   </div>
 
@@ -156,7 +170,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/hyde/" style="font-size: 10px;">hyde</a> <a href="/tags/jekyll/" style="font-size: 10px;">jekyll</a>
+      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/jekyll/" style="font-size: 10px;">jekyll</a> <a href="/tags/neon/" style="font-size: 10px;">neon</a>
     </div>
   </div>
 
@@ -178,11 +192,15 @@
       <ul>
         
           <li>
-            <a href="/2017/05/08/hello-world/">Hello World</a>
+            <a href="/2017/05/12/ARM-neon/">ARM Neon</a>
           </li>
         
           <li>
-            <a href="/2017/05/08/2017-05-08-introducing-hyde/">Introducing Hyde</a>
+            <a href="/2017/05/12/hexo-themes/">hexo themes</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/12/hexo-startup/">hexo startup</a>
           </li>
         
           <li>

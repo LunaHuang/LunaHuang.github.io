@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  <title>ARM Neon | Luna&#39;s Note</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<meta name="keywords" content="neon">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ARM Neon">
+<meta property="og:url" content="https://lunahuang.github.io/2017/05/12/ARM-neon/index.html">
+<meta property="og:site_name" content="Luna&#39;s Note">
+<meta property="og:description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<meta property="og:image" content="https://lunahuang.github.io/images/neon_1.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/neon_2.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/neon_3.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/yuv_420p.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/yuv_420sp.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/yuy2.png">
+<meta property="og:updated_time" content="2017-05-12T15:06:19.821Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ARM Neon">
+<meta name="twitter:description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<meta name="twitter:image" content="https://lunahuang.github.io/images/neon_1.png">
+  
+    <link rel="alternate" href="/atom.xml" title="Luna&#39;s Note" type="application/atom+xml">
+  
+  
+    <link rel="icon" href="/favicon.png">
+  
+  
+    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
+  
+  <link rel="stylesheet" href="/css/style.css">
+  
+
+</head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">Luna&#39;s Note</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">有些東西總是要記錄 才不會遺忘</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="rss_feed"></a>
+        
+        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lunahuang.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+      <div class="outer">
+        <section id="main"><article id="post-ARM-neon" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2017/05/12/ARM-neon/" class="article-date">
+  <time datetime="2017-05-12T06:15:38.000Z" itemprop="datePublished">2017-05-12</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="article-title" itemprop="name">
+      ARM Neon
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>參考相關資料</p>
+<p><a href="http://hcliao.twbbs.org/android/neon" target="_blank" rel="external">android_neon</a> <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1360928366062.html" target="_blank" rel="external">來源1</a><br><a href="http://www.jianshu.com/p/70601b36540f" target="_blank" rel="external">來源2</a> <a href="https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-1-load-and-stores" target="_blank" rel="external">來源3</a></p>
+<p>在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
+<p>Neon 是 ARM 的SIMD 指令 (Single Instruction Multiple Data),<br>在ARM cortex 系列才有支援 主要用在media 相關的處理<br>有支援C &amp; C++ language （<code>#include &lt;arm_neon.h&gt;</code>）<br>所以可以看到有人用C 或 S 寫<br>主要register type 是D(64bits) &amp; Q(128bits), 共有D0～D32 對應到Q0~Q16<br>所以每兩個D register對應到一個Qregister</p>
+<p>這邊有幾個項目需要注意一下</p>
+<ol>
+<li>NEON instructions execute in their own 10-stage pipeline</li>
+<li>ARM can dispatch 2 NEON instructions per cycle</li>
+<li>ARM → NEON register transfer is fast</li>
+<li>NEON → ARM register transfer is slow</li>
+<li>NEON instructions will physically execute much later than they appear to in the code</li>
+<li>32 64-bit (“doubleword”) registers: d0-d31</li>
+<li>16 128-bit (“quadword”) registers: q0-q15</li>
+<li>qN is aliased to d(2N), d(2N+1)<ul>
+<li>e.g., q0 == d0, d1</li>
+</ul>
+</li>
+<li>q4-q7 are callee-saved<ul>
+<li>VPUSH {q4-q7}</li>
+<li>VPOP {q4-q7}</li>
+</ul>
+</li>
+</ol>
+<p><img src="/images/neon_1.png" alt="neon_reg"></p>
+<p>在arm_neon.h 內可以看到相關的C用到的定義<br>在Neon下很重視 對齊 所以格式需要符合要求 才能做存取的動作<br>所以當不對齊時 需要做調整</p>
+<pre><code>uint8x8_t vld1_u8 (const uint8_t *)
+第二个字段&apos;ld&apos;表示加载指令
+第三个字段&apos;1&apos;(注意是1，不是l)表示顺次加载。如果需要处理图像的
+</code></pre><p>RGB分量，可能会用到vld3。关于vld/vst指令更详细的说明，请自己参阅arm官方文档。</p>
+<p>從memory load to neon 跟從neon load 到memory  的方式如下:<br><img src="/images/neon_2.png" alt=""><br><img src="/images/neon_3.png" alt=""></p>
+<p>＃＃YUV 格式 紀錄</p>
+<p>參考資料<br><a href="https://wiki.videolan.org/YUV/#I422" target="_blank" rel="external">來源1</a> <a href="https://read01.com/jxN8QD.html" target="_blank" rel="external">來源2</a> <a href="http://blog.csdn.net/leixiaohua1020/article/details/12234821" target="_blank" rel="external">來源3</a></p>
+<p>在影像儲存格式中YUV是常見的格式<br>目前確定USB camera 會用YUYV 跟MJPG<br>IP camera 有用到I420P<br>YUV，分為三個分量，「Y」表示明亮度（Luminance或Luma），也就是灰度<br>值；<br>而「U」和「V」 表示的則是色度（Chrominance或Chroma），作用是描述&gt;影像色彩及飽和度，用於指定像素的顏色。</p>
+<p>與我們熟知的RGB類似，YUV也是一種顏色編碼方法，主要用於電視系統以&gt;及模擬視頻領域，它將亮度信息（Y）與色彩信息（UV）分離，沒有UV信息<br>一樣可以顯示完整的圖像，只不過是黑白的，這樣的設計很好地解決了彩&gt;色電視機與黑白電視的兼容問題。並且，YUV不像RGB那樣要求三個獨立的&gt;視頻信號同時傳輸，所以用YUV方式傳送占用極少的頻寬。<br><a href="https://read01.com/jxN8QD.html" target="_blank" rel="external">原文網址</a></p>
+<p>對人類而言 亮度的感受 會比色度來的明顯<br>這是因為人眼視網膜是由兩種感光細胞組成的<br>分別是三種錐狀細胞(cone cell,以下稱CC)和一種桿狀細胞(rod cell,以&gt;下稱RC)<br>三種CC能分別感應RGB三種波長的光 負責色彩感受(這就是光學三原色的由<br>來)<br>RC則是負責亮度的感應 且RC對微光的敏感度比CC還強得多<br>這就是為什麼當你晚上在房間摸黑時 所有東西看起來都是接近黑白的 沒&gt;什麼顏色</p>
+<p>YUV 的格式有分很多種排列方式<br>IP camera 用到的I420p是 YUV420p 它跟  YUV420sp在UV這邊排列方式是&gt;不一樣的<br><img src="/images/yuv_420p.png" alt="yuv420p"><br>NV12: YYYYYYYY UVUV =&gt;YUV420SP<br><img src="/images/yuv_420sp.png" alt="NV21"></p>
+<p>在I420轉RGB這邊 用NEON可以大大的減少CPU loading 如下表</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">方式</th>
+<th style="text-align:center">CPU loading</th>
+<th style="text-align:center">time</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">QT 轉換</td>
+<td style="text-align:center">70％</td>
+<td style="text-align:center">N</td>
+</tr>
+<tr>
+<td style="text-align:center">C code(RGB24)</td>
+<td style="text-align:center">40~43％</td>
+<td style="text-align:center">6-14ms</td>
+</tr>
+<tr>
+<td style="text-align:center">NEON(RGB32)</td>
+<td style="text-align:center">30~32％</td>
+<td style="text-align:center">2-4ms</td>
+</tr>
+</tbody>
+</table>
+<p>USB camera YUYV(YUY2)  用的排列方式是 YUYV的方式 下圖的Cb = U Cr=V<br><img src="/images/yuy2.png" alt="yuy2"></p>
+<p>因為排列方式不一樣 所以用的YUV to RGB演算法耶不一樣<br>目前在網路上可以直接找到的neon yuvTOrgb 比較多得是I4202RGB NV212RGB 等<br>YUY2RGB 的部份找不到<br>有試過先轉成I420 在轉成RGB發現顏色上面會失真<br>轉的方式是保留兩個 Y 在UV這邊留下一個偶數行的部份</p>
+<pre><code>int YUY2ToI420(unsigned char *in, unsigned char *out, int _width, int _height){
+    long pixels = _width * _height;
+    long macropixels = pixels / 2; // macropixel count
+    // new size will be w * h * 3/2 -&gt; 12 bits per pixel 4:2:0
+    const size_t stride = align16(_width);
+    //long mpx_per_row = info.biWidth / 2;
+    long mpx_per_row = stride;
+    // for each macropixel
+    for (int i = 0, ci = 0; i &lt; macropixels; i++){ // ci is chroma index
+        // get macropixel address, order is Y0 U0 Y1 V0
+        unsigned char *mpAddress = in + i * 4;
+
+        // copy luma data
+        out[i * 2] = mpAddress[0];
+        out[i * 2 + 1] = mpAddress[2];
+        // copy chroma data - we skip odd rows because of 4:2:0 sampling
+        long row_number = i / mpx_per_row;
+        if (row_number % 2 != 0) {
+            out[pixels + ci] = mpAddress[1]; // shift by Y vector
+            out[pixels + pixels / 4 + ci] = mpAddress[3]; // shift by Y and U vector
+            ci++;
+        }
+    }
+    return pixels * 12 / 8; // I420
+}
+</code></pre><p>測試過透過ffmpag libswscale 轉換 效果也不好<br><a href="http://blog.csdn.net/wenwei19861106/article/details/8702586" target="_blank" rel="external">來源1</a> <a href="http://guguclock.blogspot.tw/2009/12/ffmpeg-swscale.html" target="_blank" rel="external">來源2</a> <a href="http://www.cnblogs.com/pokerface/p/6203577.html" target="_blank" rel="external">來源3</a></p>
+<pre><code>#if LIBAVCODEC_VERSION_INT &lt; AV_VERSION_INT(55,28,1)
+#define av_frame_alloc  avcodec_alloc_frame
+#endif
+int swscale(unsigned char *p, unsigned char *rgb, int src_w, int src_h)
+{
+ //   const int src_w=640,src_h=480;
+ //   unsigned char *rgb, *p;
+    AVFrame *pFrame = av_frame_alloc();
+    AVFrame *pFrameRGB = av_frame_alloc();
+
+    avpicture_fill((AVPicture*) pFrameRGB, rgb, PIX_FMT_RGB24, src_w, src_h);
+    avpicture_fill((AVPicture*) pFrame, p, PIX_FMT_YUYV422, src_w, src_h);
+
+    struct SwsContext *img_convert_ctx = sws_getContext(src_w, src_h, PIX_FMT_YUYV422, src_w, src_h, PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+    sws_scale(img_convert_ctx, (uint8_t const* const*)pFrame-&gt;data, pFrame-&gt;linesize,0,src_h,pFrameRGB-&gt;data, pFrameRGB-&gt;linesize);
+    sws_freeContext(img_convert_ctx);
+    av_freep(&amp;pFrameRGB);
+    av_freep(&amp;pFrame);
+    return 0;
+}
+</code></pre><p>目前有做一些實驗確認 USB camera CPU loading 的問題點</p>
+<ol>
+<li>移除呼叫YUYVtoRGB的code 這樣測試出來 CPU loading 一樣是60％</li>
+<li>在 CameraFrameGrabber::present(const QVideoFrame &amp;frame) 加上count 超過5時會直接return trun 測試出來CPU loading 一樣60％</li>
+<li>將格式直接呼叫I420toRGB neon CPU loading一樣60%</li>
+<li>建立一個red QImage 畫上去 不呼叫轉換的code跟memory copy<pre><code>img = QImage(640, 480, QImage::Format_RGB32);
+img.fill(QColor(&quot;red&quot;));
+</code></pre>CPU loading一樣57% 左右</li>
+<li>拿掉 emit frameAvailable(img); CPU loading 掉到35％</li>
+<li>跑qml or gstreamer,  CPU loading 是2-4％ 猜測問題點在來源(input) 目前沒有解</li>
+<li>透過 mjpg_streamer 測試 USB camera 發現CPU loading 大約46％<br>所以可以大概判定是source 來源問題</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://lunahuang.github.io/2017/05/12/ARM-neon/" data-id="cj2m07xwo0001y00602fske9b" class="article-share-link">Share</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neon/">neon</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2017/05/12/hexo-themes/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">hexo themes</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Categories</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jekyll/">jekyll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neon/">neon</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/jekyll/" style="font-size: 10px;">jekyll</a> <a href="/tags/neon/" style="font-size: 10px;">neon</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">archive_a</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2017/05/12/ARM-neon/">ARM Neon</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/12/hexo-themes/">hexo themes</a>
+          </li>
+        
+          <li>
+            <a href="/2017/05/12/hexo-startup/">hexo startup</a>
+          </li>
+        
+          <li>
+            <a href="/2017/04/27/2017-04-27-jekyll-github/">利用Jekyll與Github Page建立自己的 Blog</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      &copy; 2017 Luna Huang<br>
+      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+
+  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
+  <script src="/fancybox/jquery.fancybox.pack.js"></script>
+
+
+<script src="/js/script.js"></script>
+
+  </div>
+</body>
+</html>
