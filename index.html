@@ -217,7 +217,7 @@ img.fill(QColor(&quot;red&quot;));
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/05/12/ARM-neon/" data-id="cj2m07xwo0001y00602fske9b" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/05/12/ARM-neon/" data-id="cj2mxu0qe0001gf06k3t2e6rv" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neon/">neon</a></li></ul>
@@ -247,7 +247,7 @@ img.fill(QColor(&quot;red&quot;));
         
   
     <h1 itemprop="name">
-      <a class="article-title" href="/2017/05/12/hexo-themes/">hexo themes</a>
+      <a class="article-title" href="/2017/05/12/hexo-themes/">hexo Landscape themes 修改</a>
     </h1>
   
 
@@ -261,11 +261,15 @@ img.fill(QColor(&quot;red&quot;));
 <p>將圖片改名成你要的就可以了 建議圖片是長條延展這樣效果比較好</p>
 <h3 id="修改網站-title-顯示的位置"><a href="#修改網站-title-顯示的位置" class="headerlink" title="修改網站 title  顯示的位置"></a>修改網站 title  顯示的位置</h3><p>在landscape/source/css/_partial/header.styl內有<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">#header-title</div><div class="line">  text-align: center</div><div class="line">  height: logo-size</div><div class="line">  position: absolute</div><div class="line">  top: 50%</div><div class="line">  left: 0</div><div class="line">  margin-top: logo-size * -0.5</div></pre></td></tr></table></figure></p>
 <p>修改top value可以調整上下位置 修改left 正數為向右移 負數為向左移</p>
+<h3 id="增加totop功能"><a href="#增加totop功能" class="headerlink" title="增加totop功能"></a>增加totop功能</h3><p>發現當文章比較長時,比較習慣有這個功能讓我快點切到最上面去轉換文章<br>Totop這個功能 在google大關鍵字就可找到範例程式<br><strong>但是我的blog透過fafeTo()這個功能是失敗的</strong> 最後找到目前可以work的方式<br>首先在增加檔案totop.ejs在<code>/layout/_partial</code> 內容爲<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">&lt;div id=&quot;totop&quot; style=&quot;position:fixed;bottom:30px;right:-50px;z-index:999;cursor:pointer;&quot;&gt;</div><div class="line">&lt;span style=&quot;color:#fff;background:#333;border-radius:3px;display:block;height:40px;width:40px;line-height:40px;text-align:center;&quot;&gt;TOP&lt;/span&gt;</div><div class="line">&lt;/div&gt;</div></pre></td></tr></table></figure></p>
+<p>增加totop.js(jQuery file) 在<code>/source/js</code>下面 內容爲<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">(function($) &#123;</div><div class="line"> $(window).scroll(function()&#123;</div><div class="line">     if ($(window).scrollTop() &gt; 200)&#123;</div><div class="line">         $(&quot;#totop&quot;).stop().animate(&#123;right:&quot;5px&quot;&#125;);</div><div class="line">     &#125;else&#123;</div><div class="line">         $(&quot;#totop&quot;).stop().animate(&#123;right:&quot;-50px&quot;&#125;);</div><div class="line">     &#125;</div><div class="line"> &#125;);</div><div class="line"> $(&quot;#totop&quot;).click(function()&#123;</div><div class="line">     $(&apos;body,html&apos;).animate(&#123;</div><div class="line">         scrollTop:0</div><div class="line">     &#125;,300);</div><div class="line">     return false;</div><div class="line"> &#125;);</div><div class="line">&#125;)(jQuery);</div></pre></td></tr></table></figure></p>
+<p>最後在<code>/layout/_partial/after-footer.ejs</code>的最後面加上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">&lt;%- partial(&apos;totop&apos;) %&gt;</div><div class="line">&lt;%- js(&apos;js/totop&apos;) %&gt;</div></pre></td></tr></table></figure></p>
+<p>這樣就可以了</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/05/12/hexo-themes/" data-id="cj2m07xwx0005y006spjspcho" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/05/12/hexo-themes/" data-id="cj2mxu0qn0005gf067bfseigh" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -338,7 +342,7 @@ img.fill(QColor(&quot;red&quot;));
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/05/12/hexo-startup/" data-id="cj2m07xwu0004y0060oecwttd" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/05/12/hexo-startup/" data-id="cj2mxu0qk0004gf061ad2olv6" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/hexo/">hexo</a></li></ul>
@@ -398,7 +402,7 @@ git push -u origin master
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/" data-id="cj2m07xwh0000y006cgxxz0m3" class="article-share-link">Share</a>
+      <a data-url="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/" data-id="cj2mxu0q80000gf06d3m4kybs" class="article-share-link">Share</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/jekyll/">jekyll</a></li></ul>
@@ -465,7 +469,7 @@ git push -u origin master
           </li>
         
           <li>
-            <a href="/2017/05/12/hexo-themes/">hexo themes</a>
+            <a href="/2017/05/12/hexo-themes/">hexo Landscape themes 修改</a>
           </li>
         
           <li>
@@ -511,6 +515,14 @@ git push -u origin master
 
 
 <script src="/js/script.js"></script>
+
+<!-- 回顶部 -->
+<div id="totop" style="position:fixed;bottom:30px;right:-50px;z-index:999;cursor:pointer;">
+<span style="color:#fff;background:#333;border-radius:3px;display:block;height:40px;width:40px;line-height:40px;text-align:center;">TOP</span>
+</div>
+
+
+<script src="/js/totop.js"></script>
 
   </div>
 </body>
