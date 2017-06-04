@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="IOS Swift 基本學習"/>
+
+
+
+
+  <meta name="keywords" content="Swift," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Luna's Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://lunahuang.github.io/2017/06/04/swift-study/"/>
+
+
+<meta name="description" content="Swift是apple 提供的一個開法在ISO跟OS X上AP的工具 根據官網描述 是一個具有高開發跟效能的語言Swift是base on cocoa跟cocoa touch框架網路上有好心人放上翻譯的文件swift 中文翻譯檔2017 apple 將Swift open出來 在pad上面有AP可以學習 並且有提供linux上面可以跑的bin file 安裝在 LinuxFirst, instal">
+<meta name="keywords" content="Swift">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IOS Swift 基本學習">
+<meta property="og:url" content="https://lunahuang.github.io/2017/06/04/swift-study/index.html">
+<meta property="og:site_name" content="Luna&#39;s Note">
+<meta property="og:description" content="Swift是apple 提供的一個開法在ISO跟OS X上AP的工具 根據官網描述 是一個具有高開發跟效能的語言Swift是base on cocoa跟cocoa touch框架網路上有好心人放上翻譯的文件swift 中文翻譯檔2017 apple 將Swift open出來 在pad上面有AP可以學習 並且有提供linux上面可以跑的bin file 安裝在 LinuxFirst, instal">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_1.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_2.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_3.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_4.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_5.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_6.png">
+<meta property="og:image" content="https://lunahuang.github.io/images/swift_7.png">
+<meta property="og:updated_time" content="2017-06-04T14:24:24.206Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="IOS Swift 基本學習">
+<meta name="twitter:description" content="Swift是apple 提供的一個開法在ISO跟OS X上AP的工具 根據官網描述 是一個具有高開發跟效能的語言Swift是base on cocoa跟cocoa touch框架網路上有好心人放上翻譯的文件swift 中文翻譯檔2017 apple 將Swift open出來 在pad上面有AP可以學習 並且有提供linux上面可以跑的bin file 安裝在 LinuxFirst, instal">
+<meta name="twitter:image" content="https://lunahuang.github.io/images/swift_1.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> IOS Swift 基本學習 - Luna's Note </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Luna's Note</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          IOS Swift 基本學習
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 4 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>Swift是apple 提供的一個開法在ISO跟OS X上AP的工具 根據官網描述 是一個具有高開發跟效能的語言<br>Swift是base on cocoa跟cocoa touch框架<br>網路上有好心人放上翻譯的文件<a href="https://tommy60703.gitbooks.io/swift-language-traditional-chinese/content/chapter1/01_swift.html" target="_blank" rel="external">swift 中文翻譯檔</a><br>2017 apple 將Swift open出來 在pad上面有AP可以學習 並且有提供linux上面可以跑的bin file</p>
+<h2 id="安裝在-Linux"><a href="#安裝在-Linux" class="headerlink" title="安裝在 Linux"></a>安裝在 Linux</h2><p>First, install clang:<br><code>$ sudo apt-get install clang</code><br><a href="https://swift.org/download/#snapshots" target="_blank" rel="external">apple Swift file</a> Apple 在網路上提供Ubuntu 14.04跟 16.04 16.10版本可執行檔</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">tar -jxvf swift-3.1.1-RELEASE-ubuntu14.04.tar.gz</div><div class="line">export PATH=[youre folder path]/swift-3.1.1-RELEASE-ubuntu14.04/usr/bin:$&#123;PATH&#125;</div><div class="line">$ swift -version</div><div class="line">&gt; Swift version 3.1.1 (swift-3.1.1-RELEASE)</div><div class="line">&gt; Target: x86_64-unknown-linux-gnu</div></pre></td></tr></table></figure>
+<p>基本上解開檔案增加bin file path 到PATH下就可以使用了<br>目前最新的版本是3.1.1</p>
+<h2 id="Run-Swift"><a href="#Run-Swift" class="headerlink" title="Run Swift"></a>Run Swift</h2><p>Swift 有提供read-eval-print Loop(REPL)開發環境 當你純粹打swift後面沒有接任何參數時會進去<br><img src="/images/swift_1.png" alt=""></p>
+<p>你可執行基本的運算或編程跟python一樣 例如<br><img src="/images/swift_2.png" alt=""><br><img src="/images/swift_3.png" alt=""></p>
+<p>另外可以透過<tab>鍵查到相關function name, command 如下<br><code>&quot;hi!&quot;.re&lt;tab&gt;</code><br><img src="/images/swift_4.png" alt=""></tab></p>
+<p>離開REPL command <code>:exit</code> <code>:q</code><br><img src="/images/swift_5.png" alt=""></p>
+<h2 id="Build-an-executable"><a href="#Build-an-executable" class="headerlink" title="Build an executable"></a>Build an executable</h2><h3 id="Create-command"><a href="#Create-command" class="headerlink" title="Create command"></a>Create command</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">mkdir Test</div><div class="line">cd Test</div><div class="line">swift package init --type executable</div></pre></td></tr></table></figure>
+<p><img src="/images/swift_6.png" alt=""></p>
+<h3 id="build-package"><a href="#build-package" class="headerlink" title="build package"></a>build package</h3><p><code>swift build</code><br>產生的執行檔在<code>.build\debug</code>下面</p>
+<p><img src="/images/swift_7.png" alt=""></p>
+<h2 id="Debug-support"><a href="#Debug-support" class="headerlink" title="Debug support"></a>Debug support</h2><p>Swift 可以透過LLDB debug</p>
+<p>LLDB is the default debugger in Xcode on Mac OS X and supports debugging C, Objective-C and C++ on the desktop and iOS devices and simulator.</p>
+<p>透過<code>swiftc -g ***.swift</code> 產生debug要用的檔案 再透過<code>lldb ***</code> 去執行debug</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">luna@luna-ubuntu14:Test$ cat Sources/main.swift </div><div class="line">print(&quot;Hello, world!&quot;)</div><div class="line">func factor(n: Int) -&gt; Int&#123;</div><div class="line">	if n &lt;= 1 &#123;return n&#125;</div><div class="line">	return n * factor(n: n-1)</div><div class="line">&#125;</div><div class="line">let number = 5</div><div class="line">print(&quot;\(number)! is equal to \(factor(n: number))&quot;)</div><div class="line">luna@luna-ubuntu14:Test$ swiftc -g Sources/main.swift </div><div class="line">luna@luna-ubuntu14:Test$ ls</div><div class="line">main  Package.swift  Sources  Tests</div><div class="line">luna@luna-ubuntu14:Test$ ls Sources/</div><div class="line">main.swift</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div></pre></td><td class="code"><pre><div class="line">luna@luna-ubuntu14:Test$ lldb main </div><div class="line">(lldb) target create &quot;main&quot;</div><div class="line">Current executable set to &apos;main&apos; (x86_64).</div><div class="line">(lldb) l</div><div class="line">   1	print(&quot;Hello, world!&quot;)</div><div class="line">   2	func factor(n: Int) -&gt; Int&#123;</div><div class="line">   3		if n &lt;= 1 &#123;return n&#125;</div><div class="line">   4		return n * factor(n: n-1)</div><div class="line">   5	&#125;</div><div class="line">   6	</div><div class="line">   7	let number = 5</div><div class="line">   8	print(&quot;\(number)! is equal to \(factor(n: number))&quot;)</div><div class="line">(lldb) b 2</div><div class="line">Breakpoint 1: where = main`main.factor (n : Swift.Int) -&gt; Swift.Int + 12 at main.swift:3, address = 0x0000000000400f5c</div><div class="line">(lldb) r</div><div class="line">Process 8098 launched: &apos;/home/luna/swift/Test/main&apos; (x86_64)</div><div class="line">Hello, world!</div><div class="line">Process 8098 stopped</div><div class="line">* thread #1, name = &apos;main&apos;, stop reason = breakpoint 1.1</div><div class="line">    frame #0: 0x0000000000400f5c main`factor(n=5) -&gt; Int at main.swift:3</div><div class="line">   1	print(&quot;Hello, world!&quot;)</div><div class="line">   2	func factor(n: Int) -&gt; Int&#123;</div><div class="line">-&gt; 3		if n &lt;= 1 &#123;return n&#125;</div><div class="line">   4		return n * factor(n: n-1)</div><div class="line">   5	&#125;</div><div class="line">   6	</div><div class="line">   7	let number = 5</div><div class="line">(lldb) p n</div><div class="line">(Int) $R0 = 5</div><div class="line">(lldb) n</div><div class="line">Process 8098 stopped</div><div class="line">* thread #1, name = &apos;main&apos;, stop reason = step over</div><div class="line">    frame #0: 0x0000000000400f70 main`factor(n=5) -&gt; Int at main.swift:4</div><div class="line">   1	print(&quot;Hello, world!&quot;)</div><div class="line">   2	func factor(n: Int) -&gt; Int&#123;</div><div class="line">   3		if n &lt;= 1 &#123;return n&#125;</div><div class="line">-&gt; 4		return n * factor(n: n-1)</div><div class="line">   5	&#125;</div><div class="line">   6	</div><div class="line">   7	let number = 5</div><div class="line">(lldb) n</div><div class="line">* thread #1, name = &apos;main&apos;, stop reason = breakpoint 1.1</div><div class="line">    frame #0: 0x0000000000400f5c main`factor(n=4) -&gt; Int at main.swift:3</div><div class="line">   1	print(&quot;Hello, world!&quot;)</div><div class="line">   2	func factor(n: Int) -&gt; Int&#123;</div><div class="line">-&gt; 3		if n &lt;= 1 &#123;return n&#125;</div><div class="line">   4		return n * factor(n: n-1)</div><div class="line">   5	&#125;</div><div class="line">   6	</div><div class="line">   7	let number = 5</div><div class="line">(lldb) p n</div><div class="line">(Int) $R1 = 4</div><div class="line">(lldb) p n*n</div><div class="line">(Int) $R2 = 16</div></pre></td></tr></table></figure>
+<h2 id="參考資料"><a href="#參考資料" class="headerlink" title="參考資料"></a>參考資料</h2><p><a href="https://swift.org/getting-started/#using-the-lldb-debugger" target="_blank" rel="external">Apple Swift</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Swift/">Swift</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2017/05/18/egalax-touch/">
+        <span class="next-text nav-default">Egalax Touch i2c interface 記錄</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2017
+    <span class="footer-author">Luna Huang.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
