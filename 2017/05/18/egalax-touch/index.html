@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="Egalax Touch i2c interface 記錄"/>
+
+
+
+
+  <meta name="keywords" content="Touch," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Luna's Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://lunahuang.github.io/2017/05/18/egalax-touch/"/>
+
+
+<meta name="description" content="這次需要支援5線touch panel,硬體選擇透過egalax touch IC(MER4485XRU) 控制我們用的是電阻式touch 所以必須要再做touch 校正 Egalax touch IC 支援界面有USB and I2C在IC韌體部分有bootload and firmware 兩部分,其中firemware用來跟上層drivere溝通default IC是支援USB interf">
+<meta name="keywords" content="Touch">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Egalax Touch i2c interface 記錄">
+<meta property="og:url" content="https://lunahuang.github.io/2017/05/18/egalax-touch/index.html">
+<meta property="og:site_name" content="Luna&#39;s Note">
+<meta property="og:description" content="這次需要支援5線touch panel,硬體選擇透過egalax touch IC(MER4485XRU) 控制我們用的是電阻式touch 所以必須要再做touch 校正 Egalax touch IC 支援界面有USB and I2C在IC韌體部分有bootload and firmware 兩部分,其中firemware用來跟上層drivere溝通default IC是支援USB interf">
+<meta property="og:updated_time" content="2017-05-18T15:57:28.406Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Egalax Touch i2c interface 記錄">
+<meta name="twitter:description" content="這次需要支援5線touch panel,硬體選擇透過egalax touch IC(MER4485XRU) 控制我們用的是電阻式touch 所以必須要再做touch 校正 Egalax touch IC 支援界面有USB and I2C在IC韌體部分有bootload and firmware 兩部分,其中firemware用來跟上層drivere溝通default IC是支援USB interf">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Egalax Touch i2c interface 記錄 - Luna's Note </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Luna's Note</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Egalax Touch i2c interface 記錄
+        
+      </h1>
+
+      <time class="post-time">
+          May 18 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>這次需要支援5線touch panel,硬體選擇透過egalax touch IC(MER4485XRU) 控制<br>我們用的是電阻式touch 所以必須要再做touch 校正</p>
+<p>Egalax touch IC 支援界面有USB and I2C<br>在IC韌體部分有bootload and firmware 兩部分,其中firemware用來跟上層drivere溝通<br>default IC是支援USB interface , 如果要支援i2c則是bootload and firmware兩個都要支援<br>如果bootload 沒有支援可以發現INT pin不會正常low 開機也不會有 high -&gt; low -&gt; high 變化<br>另外 透過i2cTOUSB 轉板 透過i2cTOUSB 轉板<br>如果firmware 沒有支援可以發現, 開機之後 INT pin不會正常low 可以透過i2cTOUSB轉板加上Windows 程式讀出firmware </p>
+<p>Egalax Touch IC 在一開機時會丟一個i2c 封包, 如果封包沒有去接受時 INT pin 會keep low </p>
+<p>egalax firmware 有支援USB and i2c interface 運作方式是</p>
+<ol>
+<li>一上電會透過D+/D-看溝通有沒有成功去決定要不要走USB 界面<br>當USB 封包溝通沒有成功時 會導向i2c界面</li>
+<li>INT 這根Pin 是有egalax 自己決定要不要拉low, 而且只有在i2c 這個interface時才會有作用<br>一上電時INT會拉上3.3v接下來egalax 會拉low ,這時候master端要去處理i2c封包 要不然會keep low狀態</li>
+</ol>
+<h2 id="校正方式"><a href="#校正方式" class="headerlink" title="校正方式"></a>校正方式</h2><p>在透過firmware溝通可以做到校正功能 , 這邊要注意因爲跟收touch資訊是透過i2c<br>fiemware溝通也是透過i2c 所以interrupt是共用的  kernel driver 這邊會將所有的封包都收掉<br>所以需要區分並且將跟fiemware溝通的回報值另外丟出來了到user space 這樣才有辦法處理</p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/Touch/">Touch</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2017/05/12/ARM-neon/">
+        <span class="next-text nav-default">ARM Neon</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2017
+    <span class="footer-author">Luna Huang.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

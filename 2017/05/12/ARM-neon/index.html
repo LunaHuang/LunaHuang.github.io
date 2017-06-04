@@ -1,12 +1,41 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta name="google-site-verification" content="KK42auCwtd6d6UNztFZRCgzHL48EYkQTDZQ1GtvcgZw" />
-  <meta charset="utf-8">
-  
-  <title>ARM Neon | Luna&#39;s Note</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="ARM Neon"/>
+
+
+
+
+  <meta name="keywords" content="neon," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Luna's Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://lunahuang.github.io/2017/05/12/ARM-neon/"/>
+
+
+<meta name="description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
 <meta name="keywords" content="neon">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ARM Neon">
@@ -24,81 +53,90 @@
 <meta name="twitter:title" content="ARM Neon">
 <meta name="twitter:description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
 <meta name="twitter:image" content="https://lunahuang.github.io/images/neon_1.png">
-  
-    <link rel="alternate" href="/atom.xml" title="Luna&#39;s Note" type="application/atom+xml">
-  
-  
-    <link rel="icon" href="/favicon.png">
-  
-  
-    <link href="//fonts.googleapis.com/css?family=Source+Code+Pro" rel="stylesheet" type="text/css">
-  
-  <link rel="stylesheet" href="/css/style.css">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
   
 
-</head>
 
-<body>
-  <div id="container">
-    <div id="wrap">
-      <header id="header">
-  <div id="banner"></div>
-  <div id="header-outer" class="outer">
-    <div id="header-title" class="inner">
-      <h1 id="logo-wrap">
-        <a href="/" id="logo">Luna&#39;s Note</a>
-      </h1>
-      
-        <h2 id="subtitle-wrap">
-          <a href="/" id="subtitle">有些東西總是要記錄 才不會遺忘</a>
-        </h2>
-      
-    </div>
-    <div id="header-inner" class="inner">
-      <nav id="main-nav">
-        <a id="main-nav-toggle" class="nav-icon"></a>
-        
-          <a class="main-nav-link" href="/">Home</a>
-        
-          <a class="main-nav-link" href="/archives">Archives</a>
-        
-      </nav>
-      <nav id="sub-nav">
-        
-          <a id="nav-rss-link" class="nav-icon" href="/atom.xml" title="rss_feed"></a>
-        
-        <a id="nav-search-btn" class="nav-icon" title="Search"></a>
-      </nav>
-      <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://lunahuang.github.io"></form>
-      </div>
-    </div>
-  </div>
-</header>
-      <div class="outer">
-        <section id="main"><article id="post-ARM-neon" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/05/12/ARM-neon/" class="article-date">
-  <time datetime="2017-05-12T06:15:38.000Z" itemprop="datePublished">2017-05-12</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 class="article-title" itemprop="name">
-      ARM Neon
+
+    <title> ARM Neon - Luna's Note </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Luna's Note</a>
     </h1>
-  
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
 
       </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          ARM Neon
+        
+      </h1>
+
+      <time class="post-time">
+          May 12 2017
+      </time>
+    </header>
+
+
+
     
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>參考相關資料</p>
+            <div class="post-content">
+            <p>參考相關資料</p>
 <p><a href="http://hcliao.twbbs.org/android/neon" target="_blank" rel="external">android_neon</a> <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1360928366062.html" target="_blank" rel="external">來源1</a><br><a href="http://www.jianshu.com/p/70601b36540f" target="_blank" rel="external">來源2</a> <a href="https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-1-load-and-stores" target="_blank" rel="external">來源3</a></p>
 <p>在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
 <p>Neon 是 ARM 的SIMD 指令 (Single Instruction Multiple Data),<br>在ARM cortex 系列才有支援 主要用在media 相關的處理<br>有支援C &amp; C++ language （<code>#include &lt;arm_neon.h&gt;</code>）<br>所以可以看到有人用C 或 S 寫<br>主要register type 是D(64bits) &amp; Q(128bits), 共有D0～D32 對應到Q0~Q16<br>所以每兩個D register對應到一個Qregister</p>
@@ -222,140 +260,85 @@ img.fill(QColor(&quot;red&quot;));
 <li>透過 mjpg_streamer 測試 USB camera 發現CPU loading 大約46％<br>所以可以大概判定是source 來源問題</li>
 </ol>
 
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://lunahuang.github.io/2017/05/12/ARM-neon/" data-id="cj2qarvxx0002wu065mxtcw38" class="article-share-link">Share</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/neon/">neon</a></li></ul>
+            </div>
+          
 
-    </footer>
-  </div>
-  
     
-<nav id="article-nav">
-  
-  
-    <a href="/2017/05/12/hexo-themes/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">hexo Landscape themes 修改</div>
-    </a>
-  
-</nav>
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/neon/">neon</a>
+          
+        </div>
 
-  
-</article>
-
-</section>
         
-          <aside id="sidebar">
-  
+        
+  <nav class="post-nav">
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Categories</h3>
-    <div class="widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Blog/">Blog</a></li></ul>
-    </div>
+      <a class="prev" href="/2017/05/18/egalax-touch/">
+        <i class="iconfont icon-left"></i>
+        <span class="prev-text nav-default">Egalax Touch i2c interface 記錄</span>
+        <span class="prev-text nav-mobile">Prev</span>
+      </a>
+    
+    
+      <a class="next" href="/2017/05/12/hexo-themes/">
+        <span class="next-text nav-default">hexo Landscape themes 修改</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
   </div>
 
 
-  
+      </footer>
     
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tags</h3>
-    <div class="widget">
-      <ul class="tag-list"><li class="tag-list-item"><a class="tag-list-link" href="/tags/hexo/">hexo</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/jekyll/">jekyll</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/neon/">neon</a></li></ul>
+  </article>
+
     </div>
-  </div>
 
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Tag Cloud</h3>
-    <div class="widget tagcloud">
-      <a href="/tags/hexo/" style="font-size: 20px;">hexo</a> <a href="/tags/jekyll/" style="font-size: 10px;">jekyll</a> <a href="/tags/neon/" style="font-size: 10px;">neon</a>
-    </div>
-  </div>
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">archive_a</h3>
-    <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/05/">May 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li></ul>
-    </div>
-  </div>
-
-
-  
-    
-  <div class="widget-wrap">
-    <h3 class="widget-title">Recent Posts</h3>
-    <div class="widget">
-      <ul>
-        
-          <li>
-            <a href="/2017/05/12/ARM-neon/">ARM Neon</a>
-          </li>
-        
-          <li>
-            <a href="/2017/05/12/hexo-themes/">hexo Landscape themes 修改</a>
-          </li>
-        
-          <li>
-            <a href="/2017/05/12/hexo-startup/">hexo startup</a>
-          </li>
-        
-          <li>
-            <a href="/2017/04/27/2017-04-27-jekyll-github/">利用Jekyll與Github Page建立自己的 Blog</a>
-          </li>
-        
-      </ul>
-    </div>
-  </div>
-
-  
-</aside>
-        
       </div>
-      <footer id="footer">
-  
-  <div class="outer">
-    <div id="footer-info" class="inner">
-      &copy; 2017 Luna Huang<br>
-      powered_by <a href="http://hexo.io/" target="_blank">Hexo</a>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2017
+    <span class="footer-author">Luna Huang.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
     </div>
-  </div>
-</footer>
-    </div>
-    <nav id="mobile-nav">
-  
-    <a href="/" class="mobile-nav-link">Home</a>
-  
-    <a href="/archives" class="mobile-nav-link">Archives</a>
-  
-</nav>
     
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+    
 
 
-  <link rel="stylesheet" href="/fancybox/jquery.fancybox.css">
-  <script src="/fancybox/jquery.fancybox.pack.js"></script>
 
 
-<script src="/js/script.js"></script>
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
 
-<!-- 回顶部 -->
-<div id="totop" style="position:fixed;bottom:30px;right:-50px;z-index:999;cursor:pointer;">
-<span style="color:#fff;background:#333;border-radius:3px;display:block;height:40px;width:40px;line-height:40px;text-align:center;">TOP</span>
-</div>
+  
 
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
 
-<script src="/js/totop.js"></script>
-
-  </div>
-</body>
+  </body>
 </html>
