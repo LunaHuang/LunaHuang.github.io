@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lunahuang.github.io/"/>
-  <updated>2017-06-04T14:24:24.206Z</updated>
+  <updated>2017-06-04T14:28:20.718Z</updated>
   <id>https://lunahuang.github.io/</id>
   
   <author>
@@ -20,7 +20,7 @@
     <link href="https://lunahuang.github.io/2017/06/04/swift-study/"/>
     <id>https://lunahuang.github.io/2017/06/04/swift-study/</id>
     <published>2017-06-04T05:21:36.000Z</published>
-    <updated>2017-06-04T14:24:24.206Z</updated>
+    <updated>2017-06-04T14:28:20.718Z</updated>
     
     <content type="html"><![CDATA[<p>Swift是apple 提供的一個開法在ISO跟OS X上AP的工具 根據官網描述 是一個具有高開發跟效能的語言<br>Swift是base on cocoa跟cocoa touch框架<br>網路上有好心人放上翻譯的文件<a href="https://tommy60703.gitbooks.io/swift-language-traditional-chinese/content/chapter1/01_swift.html" target="_blank" rel="external">swift 中文翻譯檔</a><br>2017 apple 將Swift open出來 在pad上面有AP可以學習 並且有提供linux上面可以跑的bin file</p>
 <h2 id="安裝在-Linux"><a href="#安裝在-Linux" class="headerlink" title="安裝在 Linux"></a>安裝在 Linux</h2><p>First, install clang:<br><code>$ sudo apt-get install clang</code><br><a href="https://swift.org/download/#snapshots" target="_blank" rel="external">apple Swift file</a> Apple 在網路上提供Ubuntu 14.04跟 16.04 16.10版本可執行檔</p>
@@ -44,7 +44,7 @@
     
     <summary type="html">
     
-      &lt;p&gt;Swift是apple 提供的一個開法在ISO跟OS X上AP的工具 根據官網描述 是一個具有高開發跟效能的語言&lt;br&gt;Swift是base on cocoa跟cocoa touch框架&lt;br&gt;網路上有好心人放上翻譯的文件&lt;a href=&quot;https://tommy6070
+      Apple Swift 工具的基本介紹
     
     </summary>
     
