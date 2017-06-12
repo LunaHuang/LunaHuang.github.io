@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/</loc>
+    
+    <lastmod>2017-06-12T14:06:41.009Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lunahuang.github.io/2017/06/04/swift-study/</loc>
     
     <lastmod>2017-06-04T14:28:20.718Z</lastmod>
@@ -47,13 +54,6 @@
     <loc>https://lunahuang.github.io/2017/05/12/ARM-neon/</loc>
     
     <lastmod>2017-05-12T15:06:19.821Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/</loc>
-    
-    <lastmod>2017-05-11T16:04:29.220Z</lastmod>
     
   </url>
   

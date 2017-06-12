@@ -317,11 +317,11 @@ img.fill(QColor(&quot;red&quot;));
     <link href="https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/"/>
     <id>https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/</id>
     <published>2017-04-27T12:46:25.000Z</published>
-    <updated>2017-05-11T16:04:29.220Z</updated>
+    <updated>2017-06-12T14:06:41.009Z</updated>
     
     <content type="html"><![CDATA[<p>因爲看到同事利用Blog當作自己的筆記 覺得蠻好用的 所以想要自己架一個<br>觀察他的blog發現竟然是github.io 讓我好奇如何用 Github 可以當作一個免費的平臺架站<br>主要是找到幾個人分享的資料 這邊來做個記錄</p>
 <p><a href="http://seans.tw/2016/make-own-blog-with-jekyll-and-github-page/" target="_blank" rel="external">利用Jekyll與Github Page建立自己的Dev-Blog</a><br><a href="https://rhadow.github.io/2015/02/18/Jekyll-x-Github-x-Blog-Part1/" target="_blank" rel="external">Jekyll x Github x Blog</a></p>
-<p>其實目前可以常見跟github結合的有 wordpress, hexo, jekyll<br>會選擇jekyll 一方面是同事也在用另一方面github上面推薦的</p>
+<p>其實目前可以常見跟github結合的有 wordpress, hexo, jekyll<br>會選擇jekyll 是因爲github上面推薦的</p>
 <p>但是在遇到tags部份的處理之後 覺得hexo比較好用 後來就改用hexo<br>可是在版本控管 Jekyll還是有優勢 可以直接享受 Github 本來就有提供的版本控制功能</p>
 <h2 id="Jekyll基本安裝"><a href="#Jekyll基本安裝" class="headerlink" title="Jekyll基本安裝"></a>Jekyll基本安裝</h2><p>Jekyll是base on ruby 開發 需要的版本要ruby2.0以上</p>
 <p>在ubuntu下 當系統已經安裝不合版本的ruby時需要更新<br><code>ruby -v</code> check version<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">luna@luna-ubuntu14:blog$ ruby -v</div><div class="line">ruby 2.0.0p384 (2014-01-12) [x86_64-linux-gnu]</div></pre></td></tr></table></figure></p>
