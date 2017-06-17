@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lunahuang.github.io/"/>
-  <updated>2017-06-17T05:31:04.119Z</updated>
+  <updated>2017-06-17T15:30:16.230Z</updated>
   <id>https://lunahuang.github.io/</id>
   
   <author>
@@ -14,6 +14,45 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>How to use LD_PRELOAD</title>
+    <link href="https://lunahuang.github.io/2017/06/17/LD-PRELOAD-use/"/>
+    <id>https://lunahuang.github.io/2017/06/17/LD-PRELOAD-use/</id>
+    <published>2017-06-17T14:27:46.000Z</published>
+    <updated>2017-06-17T15:30:16.230Z</updated>
+    
+    <content type="html"><![CDATA[<p>這邊是聽jserv 的線上講座<a href="https://hackmd.io/s/HkK7Uf4Ml#" target="_blank" rel="external">你所不知道的 C 語言：動態連結器篇</a> 才知道的方式<br>爲了怕忘記做些測試候的記錄<br>這邊用的範例也是base on jserv的範例做修改測試 </p>
+<h1 id="LD-PRELOAD"><a href="#LD-PRELOAD" class="headerlink" title="LD_PRELOAD"></a>LD_PRELOAD</h1><p>透過在執行檔案之前加上 LD_PRELOAD=xxx.so 可以將後面執行程式所呼叫的function取代成xxx.so內的function<br>也就是我們可以做到替換libc內的函式 改成我們自己的 <code>當程式執行時</code></p>
+<p><a href="https://github.com/shihyu/Linux_Programming/tree/master/example/%E7%94%A8LD_PRELOAD%E6%9B%BF%E6%8F%9B%E5%8B%95%E6%85%8B%E9%80%A3%E7%B5%90%E7%9A%84%E5%87%BD%E5%BC%8F%E5%BA%AB" target="_blank" rel="external">github 上面也有人寫相關資料</a></p>
+<h1 id="測試"><a href="#測試" class="headerlink" title="測試"></a>測試</h1><p>目標是將malloc and free 替換成自己的library 當執行測試檔時,code 的內容如下</p>
+<h3 id="malloc-count-c"><a href="#malloc-count-c" class="headerlink" title="malloc_count.c"></a>malloc_count.c</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div></pre></td><td class="code"><pre><div class="line">#include &lt;stddef.h&gt;</div><div class="line">#include &lt;dlfcn.h&gt;</div><div class="line">void *malloc(size_t size)</div><div class="line">&#123;</div><div class="line">    char buf[32];</div><div class="line">    static void *(*real_malloc)(size_t) = NULL;</div><div class="line">    if (real_malloc == NULL) &#123;</div><div class="line">        real_malloc = dlsym(RTLD_NEXT, &quot;malloc&quot;);</div><div class="line">    &#125;</div><div class="line">    sprintf(buf, &quot;malloc called, size = %zu\n&quot;, size);</div><div class="line">    write(2, buf, strlen(buf));</div><div class="line">    return real_malloc(size);</div><div class="line">&#125;</div><div class="line"></div><div class="line">void *free(void *ptr)</div><div class="line">&#123;</div><div class="line">    char buf[32];</div><div class="line">    static void *(*real_free)(void *ptr) = NULL;</div><div class="line">    if (real_free == NULL) &#123;</div><div class="line">        real_free = dlsym(RTLD_NEXT, &quot;free&quot;);</div><div class="line">    &#125;</div><div class="line">    sprintf(buf, &quot;free called, ptr address = %x\n&quot;, ptr);</div><div class="line">    write(2, buf, strlen(buf));</div><div class="line">	real_free(ptr);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="test-c"><a href="#test-c" class="headerlink" title="test.c"></a>test.c</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">#include &lt;stdio.h&gt;</div><div class="line">#include &lt;stdlib.h&gt;</div><div class="line">#include &lt;string.h&gt;</div><div class="line"></div><div class="line">void main(void)</div><div class="line">&#123;</div><div class="line">	char *buffer;</div><div class="line"></div><div class="line">	buffer = malloc(sizeof(char)*10);</div><div class="line">	memset(buffer, 0x41, 10);</div><div class="line">	puts(buffer);</div><div class="line">	free(buffer);</div><div class="line">	buffer = NULL;</div><div class="line">	free(buffer);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>編譯command :<br>原本用的command 跟講座上面是一樣的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -D_GNU_SOURCE -Wall -shared -ldl -fPIC -o libmcount.so malloc_count.c</div></pre></td></tr></table></figure></p>
+<p>編譯之後透過ls測試也是可以跑的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">memory_test$ LD_PRELOAD=libmcount.so ls</div><div class="line">malloc called, size = 568</div><div class="line">malloc called, size = 120</div><div class="line">free called, ptr address = 136a250</div><div class="line">free called, ptr address = 136a010</div><div class="line">free called, ptr address = 0</div><div class="line">malloc called, size = 5</div><div class="line">free called, ptr address = 136a010</div><div class="line">malloc called, size = 120</div><div class="line">malloc called, size = 12</div><div class="line">malloc called, size = 784</div><div class="line">malloc called, size = 112</div><div class="line">malloc called, size = 952</div><div class="line">malloc called, size = 216</div></pre></td></tr></table></figure></p>
+<p>但是跑test 測試程式會出現library 找不到的問題<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">gcc -o test test.c</div><div class="line">memory_test$ LD_PRELOAD=libmcount.so ./test</div><div class="line">./test: symbol lookup error: libmcount.so: undefined symbol: dlsym</div></pre></td></tr></table></figure></p>
+<p>透過ldd 發現缺少dl library<br><img src="/images/C_code/ld_preload_1.png" alt=""></p>
+<p>檢查ls and test 執行檔 可以發現ls有linker ld library但是test沒有, 這也是爲何ls可以跑<br><img src="/images/C_code/ld_preload_3.png" alt=""></p>
+<p>猜測因該是compiler最佳化之後將librar去除掉了  查看網路上有人說<code>-ldl</code>拉到最後面就可以<br>修改後做測試確定test可以跑了<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">gcc -D_GNU_SOURCE -Wall -shared -fPIC -o libmcount.so malloc_count.c -ldl</div></pre></td></tr></table></figure></p>
+<p><img src="/images/C_code/ld_preload_2.png" alt=""></p>
+<p><img src="/images/C_code/ld_preload_4.png" alt=""></p>
+<p>&lt;注意&gt; </p>
+<ol>
+<li>lbrary compiler時需要加上<code>-D_GNU_SOURCE</code> 是因爲library有用到RTLD_NEXT</li>
+<li>free pointer 之後需要將pointer 設爲null 這樣在後面如果不小心再free 到時才不會有double free message<br><code>double free or corruption</code><br>C手冊上面有這一段<br><img src="/images/C_code/ld_preload_5.png" alt=""></li>
+</ol>
+]]></content>
+    
+    <summary type="html">
+    
+      說明如何建立library 再透過LD_PRELOAD 取代原本有的function
+    
+    </summary>
+    
+    
+      <category term="C" scheme="https://lunahuang.github.io/tags/C/"/>
+    
+  </entry>
   
   <entry>
     <title>Fix hexo server 啓動時 sass fail</title>
