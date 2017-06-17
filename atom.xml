@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lunahuang.github.io/"/>
-  <updated>2017-06-04T14:28:20.718Z</updated>
+  <updated>2017-06-17T05:31:04.119Z</updated>
   <id>https://lunahuang.github.io/</id>
   
   <author>
@@ -14,6 +14,60 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Fix hexo server 啓動時 sass fail</title>
+    <link href="https://lunahuang.github.io/2017/06/17/hexo-error-sass/"/>
+    <id>https://lunahuang.github.io/2017/06/17/hexo-error-sass/</id>
+    <published>2017-06-17T05:05:36.000Z</published>
+    <updated>2017-06-17T05:31:04.119Z</updated>
+    
+    <content type="html"><![CDATA[<p>這個問題是啓動hexo server時 看到有error message<br><img src="/images/hexo_3.png" alt=""></p>
+<p>在網路上面搜尋到解法是更新sass<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install --save hexo-renderer-sass@^0.1</div></pre></td></tr></table></figure></p>
+<p>不過我這邊安裝前後比對hexo相關版本的值是沒有變化的 不過問題是解掉了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">hexo version</div><div class="line">hexo: 3.3.5</div><div class="line">hexo-cli: 1.0.2</div><div class="line">os: Linux 3.13.0-37-generic linux x64</div><div class="line">http_parser: 2.3</div><div class="line">node: 0.12.7</div><div class="line">v8: 3.28.71.19</div><div class="line">uv: 1.6.1</div><div class="line">zlib: 1.2.8</div><div class="line">modules: 14</div><div class="line">openssl: 1.0.1p</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/knksmith57/hexo-renderer-sass/issues/7" target="_blank" rel="external">參考資料</a></p>
+]]></content>
+    
+    <summary type="html">
+    
+      修正在啓動hexo server 時 sass plugin load fail
+    
+    </summary>
+    
+    
+      <category term="hexo" scheme="https://lunahuang.github.io/tags/hexo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Ubuntu enable samba</title>
+    <link href="https://lunahuang.github.io/2017/06/17/ubuntu-samba/"/>
+    <id>https://lunahuang.github.io/2017/06/17/ubuntu-samba/</id>
+    <published>2017-06-17T04:28:09.000Z</published>
+    <updated>2017-06-17T04:57:53.867Z</updated>
+    
+    <content type="html"><![CDATA[<p>目前我是透過samba讓實體機器Linux 跟VMwave Windows可以互相傳資料<br>之前samba設定錯誤一直沒有設定權限 這邊記錄一下怎樣設定</p>
+<h2 id="install-samba-on-Ubuntu"><a href="#install-samba-on-Ubuntu" class="headerlink" title="install samba on Ubuntu"></a>install samba on Ubuntu</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install samba</div></pre></td></tr></table></figure>
+<h2 id="create-account-for-samba-user"><a href="#create-account-for-samba-user" class="headerlink" title="create account for samba user"></a>create account for samba user</h2><p>這邊目的是建立一個專屬的可以用samba的account 當然如果懶惰也可以直接用你現有的account 就跳過下一個步驟<br>create addount : <code>sudo adduser smbuser</code></p>
+<p>新增使用者並同時設定這個使用者的 Samba 登人密碼 ： <code>sudo smbpasswd -a smbuser</code></p>
+<p>輸入完密碼之後就可以修改<code>/etc/samba/smb.conf</code> 添加範例如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">[global]</div><div class="line">security = user  #enable security, 設share 就沒有password request</div><div class="line"></div><div class="line">[share_file]  # share_file 名稱可以自行變更主要是顯示給外面透過search的人看的</div><div class="line">path = /home/smbuser # 這個是要分享的資料夾路徑</div><div class="line">available = yes</div><div class="line">valid users = smbuser # 這個是可以使用這個分享資料夾的使用者，要具有 path 所指定的路徑的權限才行</div><div class="line">read only = no</div><div class="line">#public = yes</div><div class="line">writable = yes</div><div class="line">browseable = yes # 在透過window 打\\your_IP後支援可以被搜尋到</div><div class="line">encrypt passwords = yes # 密碼傳送時要加密 </div><div class="line">smb passwd file = /etc/samba/smbpasswd #password save path</div></pre></td></tr></table></figure>
+<p>重新啟動 Samba Server<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo /etc/init.d/samba restart</div></pre></td></tr></table></figure></p>
+<p>可以透過testparm來檢查設定是否有問題 會顯示如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">Load smb config files from /etc/samba/smb.conf</div><div class="line">rlimit_max: increasing rlimit_max (1024) to minimum Windows limit (16384)</div><div class="line">Processing section &quot;[tmp]&quot;</div><div class="line">Global parameter encrypt passwords found in service section!</div><div class="line">Global parameter smb passwd file found in service section!</div><div class="line">Loaded services file OK.</div><div class="line">WARNING: &apos;workgroup&apos; and &apos;netbios name&apos; must differ.</div><div class="line">Server role: ROLE_STANDALONE</div><div class="line">Press enter to see a dump of your service definitions</div></pre></td></tr></table></figure></p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;目前我是透過samba讓實體機器Linux 跟VMwave Windows可以互相傳資料&lt;br&gt;之前samba設定錯誤一直沒有設定權限 這邊記錄一下怎樣設定&lt;/p&gt;
+&lt;h2 id=&quot;install-samba-on-Ubuntu&quot;&gt;&lt;a href=&quot;#install-sam
+    
+    </summary>
+    
+    
+      <category term="Samba" scheme="https://lunahuang.github.io/tags/Samba/"/>
+    
+  </entry>
   
   <entry>
     <title>IOS Swift 基本學習</title>
@@ -88,11 +142,11 @@
     <link href="https://lunahuang.github.io/2017/05/12/ARM-neon/"/>
     <id>https://lunahuang.github.io/2017/05/12/ARM-neon/</id>
     <published>2017-05-12T06:15:38.000Z</published>
-    <updated>2017-05-12T15:06:19.821Z</updated>
+    <updated>2017-06-17T05:12:39.307Z</updated>
     
     <content type="html"><![CDATA[<p>參考相關資料</p>
 <p><a href="http://hcliao.twbbs.org/android/neon" target="_blank" rel="external">android_neon</a> <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1360928366062.html" target="_blank" rel="external">來源1</a><br><a href="http://www.jianshu.com/p/70601b36540f" target="_blank" rel="external">來源2</a> <a href="https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-1-load-and-stores" target="_blank" rel="external">來源3</a></p>
-<p>在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
+<p>在 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
 <p>Neon 是 ARM 的SIMD 指令 (Single Instruction Multiple Data),<br>在ARM cortex 系列才有支援 主要用在media 相關的處理<br>有支援C &amp; C++ language （<code>#include &lt;arm_neon.h&gt;</code>）<br>所以可以看到有人用C 或 S 寫<br>主要register type 是D(64bits) &amp; Q(128bits), 共有D0～D32 對應到Q0~Q16<br>所以每兩個D register對應到一個Qregister</p>
 <p>這邊有幾個項目需要注意一下</p>
 <ol>

@@ -35,23 +35,23 @@
 <link rel="canonical" href="https://lunahuang.github.io/2017/05/12/ARM-neon/"/>
 
 
-<meta name="description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<meta name="description" content="參考相關資料 android_neon 來源1來源2 來源3 在 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式 IP came">
 <meta name="keywords" content="neon">
 <meta property="og:type" content="article">
 <meta property="og:title" content="ARM Neon">
 <meta property="og:url" content="https://lunahuang.github.io/2017/05/12/ARM-neon/index.html">
 <meta property="og:site_name" content="Luna&#39;s Note">
-<meta property="og:description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<meta property="og:description" content="參考相關資料 android_neon 來源1來源2 來源3 在 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式 IP came">
 <meta property="og:image" content="https://lunahuang.github.io/images/neon_1.png">
 <meta property="og:image" content="https://lunahuang.github.io/images/neon_2.png">
 <meta property="og:image" content="https://lunahuang.github.io/images/neon_3.png">
 <meta property="og:image" content="https://lunahuang.github.io/images/yuv_420p.png">
 <meta property="og:image" content="https://lunahuang.github.io/images/yuv_420sp.png">
 <meta property="og:image" content="https://lunahuang.github.io/images/yuy2.png">
-<meta property="og:updated_time" content="2017-05-12T15:06:19.821Z">
+<meta property="og:updated_time" content="2017-06-17T05:12:39.307Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="ARM Neon">
-<meta name="twitter:description" content="參考相關資料 android_neon 來源1來源2 來源3 在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式">
+<meta name="twitter:description" content="參考相關資料 android_neon 來源1來源2 來源3 在 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用因為QImage 吃的格式有限制QImageNote: In general QImage does not handle YUV formats.加上USB camera 進來會是YUYV (YUY2) 格式 IP came">
 <meta name="twitter:image" content="https://lunahuang.github.io/images/neon_1.png">
 
 
@@ -138,7 +138,7 @@
             <div class="post-content">
             <p>參考相關資料</p>
 <p><a href="http://hcliao.twbbs.org/android/neon" target="_blank" rel="external">android_neon</a> <a href="http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0472k/chr1360928366062.html" target="_blank" rel="external">來源1</a><br><a href="http://www.jianshu.com/p/70601b36540f" target="_blank" rel="external">來源2</a> <a href="https://community.arm.com/processors/b/blog/posts/coding-for-neon---part-1-load-and-stores" target="_blank" rel="external">來源3</a></p>
-<p>在cMT3090 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
+<p>在 camera 這邊我們是透過QT Qcamera 收取影像來源 在透過QImage 去產生image 做利用<br>因為QImage 吃的格式有限制<br><a href="http://doc.qt.io/qt-5/qvideoframe.html#imageFormatFromPixelFormat" target="_blank" rel="external">QImage</a><br><strong>Note: In general QImage does not handle YUV formats.</strong><br>加上USB camera 進來會是YUYV (YUY2) 格式 IP camera 進來會是 I420p 格式<br>所以在這邊需要做格式轉換從YUV -&gt; RGB<br>可以透過QT 直接去轉換<br>在<code>CameraFrameGrabber::supportedPixelFormats</code> 這邊只有<br><code>return QVideoFrame::Format_RGB32</code><br>這樣在QT發現當下的格式不是RGB32時 會自己轉換格式<br>但是這邊造成CPU loaging太高了 約佔掉70-80％ 可以說用掉1個半CPU<br>所以我們想要利用neon指令 來優化程式效率</p>
 <p>Neon 是 ARM 的SIMD 指令 (Single Instruction Multiple Data),<br>在ARM cortex 系列才有支援 主要用在media 相關的處理<br>有支援C &amp; C++ language （<code>#include &lt;arm_neon.h&gt;</code>）<br>所以可以看到有人用C 或 S 寫<br>主要register type 是D(64bits) &amp; Q(128bits), 共有D0～D32 對應到Q0~Q16<br>所以每兩個D register對應到一個Qregister</p>
 <p>這邊有幾個項目需要注意一下</p>
 <ol>

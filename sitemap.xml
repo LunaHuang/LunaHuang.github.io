@@ -2,6 +2,27 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://lunahuang.github.io/2017/06/17/hexo-error-sass/</loc>
+    
+    <lastmod>2017-06-17T05:31:04.119Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://lunahuang.github.io/2017/05/12/ARM-neon/</loc>
+    
+    <lastmod>2017-06-17T05:12:39.307Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>https://lunahuang.github.io/2017/06/17/ubuntu-samba/</loc>
+    
+    <lastmod>2017-06-17T04:57:53.867Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://lunahuang.github.io/2017/04/27/2017-04-27-jekyll-github/</loc>
     
     <lastmod>2017-06-12T14:06:41.009Z</lastmod>
@@ -47,13 +68,6 @@
     <loc>https://lunahuang.github.io/2017/05/12/hexo-startup/</loc>
     
     <lastmod>2017-05-13T04:53:52.575Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://lunahuang.github.io/2017/05/12/ARM-neon/</loc>
-    
-    <lastmod>2017-05-12T15:06:19.821Z</lastmod>
     
   </url>
   

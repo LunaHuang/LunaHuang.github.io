@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="修正在啓動hexo server 時 sass plugin load fail"/>
+
+
+
+
+  <meta name="keywords" content="hexo," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Luna's Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://lunahuang.github.io/2017/06/17/hexo-error-sass/"/>
+
+
+<meta name="description" content="修正在啓動hexo server 時 sass plugin load fail">
+<meta name="keywords" content="hexo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Fix hexo server 啓動時 sass fail">
+<meta property="og:url" content="https://lunahuang.github.io/2017/06/17/hexo-error-sass/index.html">
+<meta property="og:site_name" content="Luna&#39;s Note">
+<meta property="og:description" content="修正在啓動hexo server 時 sass plugin load fail">
+<meta property="og:image" content="https://lunahuang.github.io/images/hexo_3.png">
+<meta property="og:updated_time" content="2017-06-17T05:31:04.119Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Fix hexo server 啓動時 sass fail">
+<meta name="twitter:description" content="修正在啓動hexo server 時 sass plugin load fail">
+<meta name="twitter:image" content="https://lunahuang.github.io/images/hexo_3.png">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> Fix hexo server 啓動時 sass fail - Luna's Note </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Luna's Note</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          Fix hexo server 啓動時 sass fail
+        
+      </h1>
+
+      <time class="post-time">
+          Jun 17 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>這個問題是啓動hexo server時 看到有error message<br><img src="/images/hexo_3.png" alt=""></p>
+<p>在網路上面搜尋到解法是更新sass<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm install --save hexo-renderer-sass@^0.1</div></pre></td></tr></table></figure></p>
+<p>不過我這邊安裝前後比對hexo相關版本的值是沒有變化的 不過問題是解掉了</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">hexo version</div><div class="line">hexo: 3.3.5</div><div class="line">hexo-cli: 1.0.2</div><div class="line">os: Linux 3.13.0-37-generic linux x64</div><div class="line">http_parser: 2.3</div><div class="line">node: 0.12.7</div><div class="line">v8: 3.28.71.19</div><div class="line">uv: 1.6.1</div><div class="line">zlib: 1.2.8</div><div class="line">modules: 14</div><div class="line">openssl: 1.0.1p</div></pre></td></tr></table></figure>
+<p><a href="https://github.com/knksmith57/hexo-renderer-sass/issues/7" target="_blank" rel="external">參考資料</a></p>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/hexo/">hexo</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2017/06/17/ubuntu-samba/">
+        <span class="next-text nav-default">Ubuntu enable samba</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2017
+    <span class="footer-author">Luna Huang.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>
