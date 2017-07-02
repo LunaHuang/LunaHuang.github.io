@@ -5,7 +5,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lunahuang.github.io/"/>
-  <updated>2017-06-17T15:30:16.230Z</updated>
+  <updated>2017-07-02T14:33:56.949Z</updated>
   <id>https://lunahuang.github.io/</id>
   
   <author>
@@ -14,6 +14,32 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>cdecl for C code 描述宣告</title>
+    <link href="https://lunahuang.github.io/2017/07/02/c-code-cdecl/"/>
+    <id>https://lunahuang.github.io/2017/07/02/c-code-cdecl/</id>
+    <published>2017-07-02T14:25:15.000Z</published>
+    <updated>2017-07-02T14:33:56.949Z</updated>
+    
+    <content type="html"><![CDATA[<p>在<a href="https://hackmd.io/s/HJFyt37Mx#" target="_blank" rel="external">Jserv 的開發工具與規格內</a> 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成code宣告格式,方便我們解讀文章所是如何用說的將宣告描述出來 透過<code>cdecl</code></p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install cdecl</div></pre></td></tr></table></figure>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>En To Code </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cdecl&gt; declare a as array of pointer to function returning pointer to function returning pointer to char</div><div class="line"></div><div class="line">char *(*(*a[])())()</div></pre></td></tr></table></figure>
+<p>Code To En</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cdecl&gt; explain char *(*fptab[])(int)</div><div class="line"></div><div class="line">declare fptab as array of pointer to function (int) returning pointer to char</div></pre></td></tr></table></figure>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在&lt;a href=&quot;https://hackmd.io/s/HJFyt37Mx#&quot; target=&quot;_blank&quot; rel=&quot;external&quot;&gt;Jserv 的開發工具與規格內&lt;/a&gt; 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成cod
+    
+    </summary>
+    
+    
+      <category term="C_code" scheme="https://lunahuang.github.io/tags/C-code/"/>
+    
+  </entry>
   
   <entry>
     <title>How to use LD_PRELOAD</title>

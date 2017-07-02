@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    
+<meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width,user-scalable=no,initial-scale=1,minimum-scale=1,maximum-scale=1">
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="description" content="cdecl for C code 描述宣告"/>
+
+
+
+
+  <meta name="keywords" content="C_code," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="Luna's Note">
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=1.1" />
+
+
+
+<link rel="canonical" href="https://lunahuang.github.io/2017/07/02/c-code-cdecl/"/>
+
+
+<meta name="description" content="在Jserv 的開發工具與規格內 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成code宣告格式,方便我們解讀文章所是如何用說的將宣告描述出來 透過cdecl Install1sudo apt-get install cdecl ExampleEn To Code  123cdecl&amp;gt; declare a as array of pointer to fu">
+<meta name="keywords" content="C_code">
+<meta property="og:type" content="article">
+<meta property="og:title" content="cdecl for C code 描述宣告">
+<meta property="og:url" content="https://lunahuang.github.io/2017/07/02/c-code-cdecl/index.html">
+<meta property="og:site_name" content="Luna&#39;s Note">
+<meta property="og:description" content="在Jserv 的開發工具與規格內 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成code宣告格式,方便我們解讀文章所是如何用說的將宣告描述出來 透過cdecl Install1sudo apt-get install cdecl ExampleEn To Code  123cdecl&amp;gt; declare a as array of pointer to fu">
+<meta property="og:updated_time" content="2017-07-02T14:33:56.949Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="cdecl for C code 描述宣告">
+<meta name="twitter:description" content="在Jserv 的開發工具與規格內 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成code宣告格式,方便我們解讀文章所是如何用說的將宣告描述出來 透過cdecl Install1sudo apt-get install cdecl ExampleEn To Code  123cdecl&amp;gt; declare a as array of pointer to fu">
+
+
+<link rel="stylesheet" type="text/css" href="/css/style.css?v=1.1" />
+<link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet'>
+
+
+
+
+
+<script type="text/javascript">
+  var themeConfig = {
+    fancybox: {
+      enable: false
+    },
+  };
+</script>
+
+
+
+
+  
+
+
+
+    <title> cdecl for C code 描述宣告 - Luna's Note </title>
+  </head>
+
+  <body>
+    <div id="page">
+      <header id="masthead"><div class="site-header-inner">
+    <h1 class="site-title">
+        <a href="/." class="logo">Luna's Note</a>
+    </h1>
+
+    <nav id="nav-top">
+        
+            <ul id="menu-top" class="nav-top-items">
+                
+                    <li class="menu-item">
+                        <a href="/archives">
+                            
+                            
+                                Archives
+                            
+                        </a>
+                    </li>
+                
+                    <li class="menu-item">
+                        <a href="/about">
+                            
+                            
+                                About
+                            
+                        </a>
+                    </li>
+                
+            </ul>
+        
+  </nav>
+</div>
+
+      </header>
+      <div id="content">
+        
+    <div id="primary">
+        
+  <article class="post">
+    <header class="post-header">
+      <h1 class="post-title">
+        
+          cdecl for C code 描述宣告
+        
+      </h1>
+
+      <time class="post-time">
+          Jul 2 2017
+      </time>
+    </header>
+
+
+
+    
+            <div class="post-content">
+            <p>在<a href="https://hackmd.io/s/HJFyt37Mx#" target="_blank" rel="external">Jserv 的開發工具與規格內</a> 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成code宣告格式,方便我們解讀文章所是如何用說的將宣告描述出來 透過<code>cdecl</code></p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install cdecl</div></pre></td></tr></table></figure>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>En To Code </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cdecl&gt; declare a as array of pointer to function returning pointer to function returning pointer to char</div><div class="line"></div><div class="line">char *(*(*a[])())()</div></pre></td></tr></table></figure>
+<p>Code To En</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cdecl&gt; explain char *(*fptab[])(int)</div><div class="line"></div><div class="line">declare fptab as array of pointer to function (int) returning pointer to char</div></pre></td></tr></table></figure>
+
+            </div>
+          
+
+    
+      <footer class="post-footer">
+        <div class="post-tags">
+          
+            <a href="/tags/C-code/">C_code</a>
+          
+        </div>
+
+        
+        
+  <nav class="post-nav">
+    
+    
+      <a class="next" href="/2017/06/17/LD-PRELOAD-use/">
+        <span class="next-text nav-default">How to use LD_PRELOAD</span>
+        <span class="prev-text nav-mobile">Next</span>
+        <i class="iconfont icon-right"></i>
+      </a>
+    
+  </nav>
+
+        
+  <div class="comments" id="comments">
+    
+  </div>
+
+
+      </footer>
+    
+  </article>
+
+    </div>
+
+      </div>
+
+      <footer id="colophon"><span class="copyright-year">
+    
+        &copy;
+    
+        2014 -
+    
+    2017
+    <span class="footer-author">Luna Huang.</span>
+    <span class="power-by">
+        Powered by <a class="hexo-link" href="https://hexo.io/">Hexo</a> and <a class="theme-link" href="https://github.com/frostfan/hexo-theme-polarbear">Polar Bear</a>
+    </span>
+</span>
+
+      </footer>
+
+      <div class="back-to-top" id="back-to-top">
+        <i class="iconfont icon-up"></i>
+      </div>
+    </div>
+    
+
+
+    
+
+
+
+
+  
+    <script type="text/javascript" src="/lib/jquery/jquery-3.1.1.min.js"></script>
+  
+
+  
+
+    <script type="text/javascript" src="/js/src/theme.js?v=1.1"></script>
+<script type="text/javascript" src="/js/src/bootstrap.js?v=1.1"></script>
+
+  </body>
+</html>

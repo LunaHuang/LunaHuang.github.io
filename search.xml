@@ -3,6 +3,26 @@
   
     
     <entry>
+      <title><![CDATA[cdecl for C code 描述宣告]]></title>
+      <url>/2017/07/02/c-code-cdecl/</url>
+      <content type="html"><![CDATA[<p>在<a href="https://hackmd.io/s/HJFyt37Mx#" target="_blank" rel="external">Jserv 的開發工具與規格內</a> 內提到一個可以用轉換工具,可以將C code 宣告轉換成英文描述,跟英文描述轉換成code宣告格式,方便我們解讀文章所是如何用說的將宣告描述出來 透過<code>cdecl</code></p>
+<h2 id="Install"><a href="#Install" class="headerlink" title="Install"></a>Install</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo apt-get install cdecl</div></pre></td></tr></table></figure>
+<h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><p>En To Code </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cdecl&gt; declare a as array of pointer to function returning pointer to function returning pointer to char</div><div class="line"></div><div class="line">char *(*(*a[])())()</div></pre></td></tr></table></figure>
+<p>Code To En</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">cdecl&gt; explain char *(*fptab[])(int)</div><div class="line"></div><div class="line">declare fptab as array of pointer to function (int) returning pointer to char</div></pre></td></tr></table></figure>
+]]></content>
+      
+        
+        <tags>
+            
+            <tag> C_code </tag>
+            
+        </tags>
+        
+    </entry>
+    
+    <entry>
       <title><![CDATA[How to use LD_PRELOAD]]></title>
       <url>/2017/06/17/LD-PRELOAD-use/</url>
       <content type="html"><![CDATA[<p>這邊是聽jserv 的線上講座<a href="https://hackmd.io/s/HkK7Uf4Ml#" target="_blank" rel="external">你所不知道的 C 語言：動態連結器篇</a> 才知道的方式<br>爲了怕忘記做些測試候的記錄<br>這邊用的範例也是base on jserv的範例做修改測試 </p>
